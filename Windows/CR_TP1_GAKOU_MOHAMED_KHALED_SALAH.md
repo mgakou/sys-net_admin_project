@@ -54,6 +54,7 @@ Conformément à l’image 1 (ci-dessous) nous avons mis l’AD en place sur la 
 ![Config réseau et AD](ressources/TP1/image1.png)
 
 ![](ressources/TP1/image2.png)
+
 Nous pouvons bien voir que AD est bien installé sur la machine (conf à l’image 3)
 
 ![](ressources/TP1/image3.png)
@@ -61,11 +62,13 @@ Nous pouvons bien voir que AD est bien installé sur la machine (conf à l’ima
 Ensuite nous configurons une machine qui sera joint au domaine AD, nous donnons comme IPv4 **192.168.9.3/24,** une adresse par défaut et un serveur DNS qui pointe vers l’IP de machine contrôleur de domaine AD (conformément à l'image 4). Et le ping depuis et vers les machines fonctionnent comme sur l’image 5 et 6 ci dessous
 
 ![](ressources/TP1/image4.png)
+
 ![](ressources/TP1/image5-6.png)
 
 Ensuite nous ajoutons la machine cliente au domaine AD avec **Add-computer** (image 8). Nous pouvons donc voir que le client est maintenant joint au domaine (conf image 8)
 
 ![](ressources/TP1/image7.png)
+
 ![](ressources/TP1/image8.png)
 
 ## **1.Conception du schéma de l’infrastructure :**  {#1.conception-du-schéma-de-l’infrastructure-:}
@@ -90,16 +93,23 @@ Le fonctionnement de Kerberos repose sur quatre étapes essentielles, avec l’u
 ## **KERBEROS \- Client joint au domaine** {#kerberos---client-joint-au-domaine}
 
 Tout d’abord, vérifions la configuration Kerberos dans le Gestionnaire de serveur depuis : Outils \> Gestions des stratégies de groupes \> Objets de stratégie de groupe \> Default Controller Domain \> Clic droit puis Modifier (conf image 9\) puis dérouler Stratégie \> Paramètre Windows \> Paramètre de sécurité \> Stratégie de comptes \> Stratégies Kerberos. Ainsi nous pouvons mettre la config souhaitée dans la partie droite (conf image 10).
+
 ![](ressources/TP1/image9-10.png)
+
 ### 
 
 **2.1 Création de répertoire sur l’AD** 
 
 Nous créons un dossier (conf image 11\) depuis l’AD que nous partageons sur le réseau afin que le client puisse y avoir accès, ainsi nous pourrons observer l'échange depuis Wireshark
+
 ![](ressources/TP1/image11.png)
+
 L'étape suivante consiste à accéder à ce dossier depuis le client et d’observer les échanges depuis wireshark conformément à l’image 12 et 13 ci-dessous. (installé sur le contrôleur de domaine).
+
 ![](ressources/TP1/image12.png)
+
 ![](ressources/TP1/image13.png)
+
 ### **Explication des échanges (image 12 et image 13):**  {#explication-des-échanges-(image-12-et-image-13):}
 
 	1\.	**AS-REQ (Authentication Service Request)**
@@ -155,6 +165,7 @@ Cette erreur indique que le KDC demande des informations supplémentaires pour c
 
 Dans cette partie, nous créons un répertoire nommé “iwanttoaccess” sur l’AD (cf image 14). Ce dossier sera accessible sur la machine cliente non issus du domaine mais appartenant au même réseau que l’AD sous le chemin : *\\\\AD1\\Users\\Administrateur\\Downloads\\iwanttoaccess*   
 Et en fournissant les identifiants de l’AD depuis la machine cliente conformément à  image 15 ci-dessous  
+
 ![](ressources/TP1/image14.png) 
 Image 14
 
@@ -162,10 +173,12 @@ Image 14
 Image 15
 
 Après avoir renseigné les credentials, nous nous rendons sur le répertoire via le chemin spécifié, nous y voyons bien notre répertoire “iwanttoaccess” conformément à l’image 16 ci dessous.   
+
 ![](ressources/TP1/image16.png) 
 Image 16
 
 En ouvrant wireshark sur l’AD et filtrant par ***ntlmssp*** nous voyons les échanges NTLM entre l’AD et le client non joint au domaine (cf image 17\)  
+
 ![](ressources/TP1/image17.png)
 Image 17
 
@@ -207,7 +220,9 @@ Le processus NTLM se déroule en trois étapes principales :
 La réinitialisation du mot de passe KRBTGT force la régénération de nouveaux tickets Kerberos pour tous les utilisateurs, rendant inutiles les tickets obtenus avec des informations de sécurité précédemment compromises.
 
 Voici un script pour réinitialiser le mot de passe du compte KRBTGT.
+
 ![](ressources/TP1/image_script_reset_pwd.png)
+
 Commentaire : Ici nous avons créons une variable krbtgt qui contient la commande **GetADUser** qui permet d’obtenir le compte KRBTGT dans Active Directory. Ensuite avec la commande **Set-ADAccountPassword** on réinitialise le mot de passe pour ce compte
 
 **Risque** : Invalidation de tous les tickets avant modification du mdp ce qui induit  une interruption de service pour les utilisateurs qui devraient s'authentifier à nouveau.  
@@ -215,13 +230,17 @@ Commentaire : Ici nous avons créons une variable krbtgt qui contient la command
 
 Sur l’AD, nous utilisons klist pour afficher le cache des tickets du kerberos et nous les supprimons (conf image 14), puis sur le client nous demandons à recevoir un nouveau ticket TGT avec klist tgt (conf image 15\) ceci génère de nouveau ticket TGT.  
 ***NB** : Il faut noter que bien qu'il soit le serveur qui délivre les tickets, les tickets ne seront pas visibles dans son propre cache Kerberos (même avec klist). Toutefois, nous  pouvons vérifier les journaux d'événements pour observer les activités liées à l'émission de tickets Kerberos.*
+
 ![](ressources/TP1/image18.png)
+
 ![](ressources/TP1/image19.png)
 
 Vérifions dans les journaux d'événements qu’un TGT a bien été généré grâce à la commande (voir image 16\) :   
 Get-WinEvent \-FilterHashtable @{LogName="Security"; ID=4768,4769,4770} | Format-List  
 Nous remarquons l’heure à laquelle le ticket a été fourni et aussi l’adresse de client qui a émis la requête et reçu le ticket (image 20 et 21\)
+
 ![](ressources/TP1/image20.png)
+
 ![](ressources/TP1/image21.png)
 
 ## 
@@ -232,19 +251,25 @@ La politique de sécurité que nous mettrons en place consiste à renouveler le 
 
 1. ### Script  {#script}
 
-   Écrire le script dans notepad et l'enregistrer, nous notons que le script doit être exécuté 2 fois de suite car ceci est recommandé. Nous sauvegardons le fichier sous **“mdptousles180jrs.ps1”**  
+   Écrire le script dans notepad et l'enregistrer, nous notons que le script doit être exécuté 2 fois de suite car ceci est recommandé. Nous sauvegardons le fichier sous **“mdptousles180jrs.ps1”**
+   
    ![](ressources/TP1/image22.png)
 
-2. ### Task Scheduler {#task-scheduler}
+3. ### Task Scheduler {#task-scheduler}
 
    Ensuite nous planifions une tâche (Planificateur de tâche) qui s'exécutera tous les 6 mois :   
+
    ![](ressources/TP1/image_name_for_the_task.png)
+
    ![](ressources/TP1/image_schedule_six_month.png)
+
    ![](ressources/TP1/image_the_action.png)
+
    ![](ressources/TP1/image_select_the_script.png)
+
    ![](ressources/TP1/image23.png)   
 
-3. ### Implication :  {#implication-:}
+5. ### Implication :  {#implication-:}
 
    1. Lorsqu'un attaquant parvient à déchiffrer le mot de passe du compte KRBTGT, il a la possibilité de générer des Golden Tickets qui lui permettent d'accéder à n'importe quelle ressource du domaine sans être détectable, même après la réinitialisation des comptes utilisateurs. Cela peut entraîner une rupture complète dans le domaine.  
    2. Effet d'une réinitialisation incorrecte :  
@@ -282,29 +307,37 @@ Cette solution vise à réduire les risques d'accès non autorisés, améliorer 
 
 **5.1 Etapes d'implémentation**  
 **Etape 1** : Création des Groupes fonctionnels
+
 ![](ressources/TP1/image29.png)
+
 **Étape 2** : Création des comptes d’administration
+
 ![](ressources/TP1/image_admin_creation.png)
 ## 
 
 **Étape 3** : Création des silos d’authentification
+
 ![](ressources/TP1/image_silos_creation.png)
+
 
 **Étape 4** : Configurer le serveur bastion  
 Activer RDP sur le serveur bastion  
+
 ![](ressources/TP1/image44.png)
 
 Créer une nouvelle GPO  
+
 ![](ressources/TP1/image_gpo_rdp_restrinction.png)
+
 Cela crée une GPO appelée **Restrictions RDP Bastion**.
 
 Définition des groupes administrateurs autorisés à se connecter au Bastion : Admins-Réseau, Admins-Fichiers, Admins-RDP  
+
 ![](ressources/TP1/image_refuse_rdp.png)
 
-
 Ensuite nous bloquons l'accès RDP pour les autres utilisateurs  
-![](ressources/TP1/image28.png)
 
+![](ressources/TP1/image28.png)
 
 Nous créons l’OU ServeurBastion on lie la GPO au serveur bastion et on applique avec **gpupdate /force**
 
@@ -319,22 +352,29 @@ Nous créons l’OU ServeurBastion on lie la GPO au serveur bastion et on appliq
    Ouvrir la console de gestion des stratégies de groupe (Group Policy Management Console \- GPMC) :  
    * Cliquez sur Démarrer, tapez gpmc.msc et appuyez sur Entrée.  
    * Dans la console, développez votre domaine, cliquez avec le bouton droit sur **"Group Policy Objects"**, puis sélectionnez **"New"** pour créer une nouvelle GPO.
+
    ![](ressources/TP1/image48.png)
+
    * Nommez la GPO: **"Disable NTLM Auth"**
+   
    ![](ressources/TP1/image31.png)
+
    * Cliquez avec le bouton droit sur la GPO nouvellement créée, puis cliquez sur **"Edit"**.  
    * Naviguez vers le chemin suivant : Computer Configuration \-\> Policies \-\> Windows Settings \-\> Security Settings \-\> Local Policies \-\> Security Options  
      Recherchez les paramètres suivants et configurez-les :  
      **"Network security: Restrict NTLM: Outgoing NTLM traffic to remote servers"** : Configurez cette option sur **"Deny all"** pour bloquer toutes les connexions NTLM sortantes.  
+   
    ![](ressources/TP1/image25.png)
+
    ![](ressources/TP1/image_ntlm_refuse_all.png)
-     **"Network security: Restrict NTLM: Incoming NTLM traffic"** : Configurez cette option sur **"Deny all"** pour refuser toutes les connexions NTLM entrantes.![]![](ressources/TP1/image30.png)
+     **"Network security: Restrict NTLM: Incoming NTLM traffic"** : Configurez cette option sur **"Deny all"** pour refuser toutes les connexions NTLM entrantes.
+   ![]![](ressources/TP1/image30.png)
 	 ![](ressources/TP1/image9.png)
 Après avoir configuré la GPO, nous pouvons la lier à tout le domaine.  
 Nous faisons un clic droit sur notre domaine puis sélectionnons **"Link an Existing GPO"** et choisir la GPO **"Disable NTLM Authentication"** que nous avions créée.  
 ![](ressources/TP1/image40.png)
 ![](ressources/TP1/image24.png)
-2. ### Test de l’outils ldp.exe :  {#test-de-l’outils-ldp.exe-:}
+3. ### Test de l’outils ldp.exe :  {#test-de-l’outils-ldp.exe-:}
 
 ![](ressources/TP1/image26.png)
 
