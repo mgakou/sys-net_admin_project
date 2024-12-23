@@ -51,7 +51,7 @@ Dans cette étape nous configurons les adresses réseaux sur l’AD et aussi sur
 
 Conformément à l’image 1 (ci-dessous) nous avons mis l’AD en place sur la machine et avons configuré une IPv4 statique **192.168.9.2/24** et une passerelle par défaut à **192.168.9.1.** Et comme nous le voyons sur l’image 2, nous avons un seul et unique serveur DNS, vu que nous mettons en place l’AD alors le DNS point vers l’ip de la machine en question car AD repose sur le DNS pour localiser les services et les ressources réseau. Le DNS intégré à l'AD est essentiel pour résoudre les noms des machines, découvrir les contrôleurs de domaine, et permettre l'authentification Kerberos et d'autres services réseau.
 
-![Config réseau et AD](ressources/TP1/image_1.png)
+![Config réseau et AD](Windows/ressources/TP1/Image_1.png)
 
 Nous pouvons bien voir que AD est bien installé sur la machine (conf à l’image 3\)
 
