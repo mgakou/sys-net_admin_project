@@ -53,6 +53,8 @@ Conformément à l’image 1 (ci-dessous) nous avons mis l’AD en place sur la 
 
 ![Config réseau et AD](ressources/TP1/image1.jpg)
 
+![Config réseau et AD](ressources/TP1/image2.png)
+
 Nous pouvons bien voir que AD est bien installé sur la machine (conf à l’image 3\)
 
 Ensuite nous configurons une machine qui sera joint au domaine AD, nous donnons comme IPv4 **192.168.9.3/24,** une adresse par défaut et un serveur DNS qui pointe vers l’IP de machine contrôleur de domaine AD (conformément à l'image 4). Et le ping depuis et vers les machines fonctionnent comme sur l’image 5 et 6 ci dessous
