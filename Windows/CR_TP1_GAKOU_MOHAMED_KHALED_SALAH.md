@@ -1,4 +1,6 @@
-Deuxième compte rendu du TP 1 ![][image1]
+Deuxième compte rendu du TP 1 
+
+![][ressources/TP1/image10.png]
 
 MOHAMED GAKOU M1 SSIR  & KHALED SALAH STRI2A
 
