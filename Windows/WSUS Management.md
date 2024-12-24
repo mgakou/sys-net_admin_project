@@ -1,12 +1,12 @@
 ![Bienvenue - UPSSITECH][image1]
 # Objectifs : 
-* -Comment installer un service sur Windows. Même si des détails divergent, les services s'installent et se configurent de manière similaires.
+* - Comment installer un service sur Windows. Même si des détails divergent, les services s'installent et se configurent de manière similaires.
 * - Comment élaborer un stratégie (Voir le contexte global, les forces et les faiblesses de votre mise en oeuvre)
 * - Les notions liées à la sécurité
 
 TP 2 : Mise en place d’un Serveur WSUS
 
-GAKOU Mohamed et Khaled Salah
+GAKOU Mohamed
 
 22/09/2024
 
