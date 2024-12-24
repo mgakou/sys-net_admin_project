@@ -1,5 +1,8 @@
-Deuxième compte rendu du TP 1 
-
+# Objective: Understand the authentication systems offered by an Active Directory.
+## Skills:
+*	- Master authentication systems
+*	- Learn to manage Kerberos
+*	- Understand NTLM and LDAP
 ![](ressources/TP1/image10.jpg)
 
 MOHAMED GAKOU M1 SSIR  & KHALED SALAH STRI2A
