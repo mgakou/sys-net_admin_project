@@ -1,3 +1,8 @@
+# Configuration Réseau pour une Machine Linux
+
+## Objectif
+Configurer une interface réseau sur une machine Linux en utilisant Netplan pour des adresses IPv4 et IPv6 statiques, définir des routes par défaut, et tester la connectivité réseau.
+
 # Config machine 
 ## Server 
 ```
