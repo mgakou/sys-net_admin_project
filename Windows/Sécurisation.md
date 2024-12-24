@@ -1,3 +1,8 @@
+# Objective: Understand securing an Active Directory server
+## SKILLS :
+- Discover how to carry out a security audit on an AD
+- Master the attributes of an account
+- Master the GPOs linked to WSUS
 ![][image1]
 
 TP 3 : Sécurisation 
