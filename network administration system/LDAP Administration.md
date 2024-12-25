@@ -170,3 +170,203 @@ etu@serveur:~$
 ```
 
 # Resetting the LDAP directory database
+
+* Let's check for the status of the slapd
+```
+etu@serveur:~$ systemctl status slapd
+● slapd.service - LSB: OpenLDAP standalone server (Lightweight Directory Access>
+     Loaded: loaded (/etc/init.d/slapd; generated)
+    Drop-In: /usr/lib/systemd/system/slapd.service.d
+             └─slapd-remain-after-exit.conf
+     Active: active (running) since Thu 2024-09-12 10:16:49 CEST; 7min ago
+ Invocation: 61e45d22a5024362b3da2f5cc8b008ea
+       Docs: man:systemd-sysv-generator(8)
+    Process: 766 ExecStart=/etc/init.d/slapd start (code=exited, status=0/SUCCE>
+      Tasks: 4 (limit: 1087)
+     Memory: 5.5M (peak: 6.5M)
+        CPU: 67ms
+     CGroup: /system.slice/slapd.service
+             └─772 /usr/sbin/slapd -h "ldap:/// ldapi:///" -g openldap -u openl>
+
+sept. 12 10:16:49 serveur systemd[1]: Starting slapd.service - LSB: OpenLDAP st>
+sept. 12 10:16:49 serveur slapd[771]: @(#) $OpenLDAP: slapd 2.5.18+dfsg-3 (Aug >
+                                              Debian OpenLDAP Maintainers <pkg->
+sept. 12 10:16:49 serveur slapd[772]: slapd starting
+sept. 12 10:16:49 serveur slapd[766]: Starting OpenLDAP: slapd.
+sept. 12 10:16:49 serveur systemd[1]: Started slapd.service - LSB: OpenLDAP sta>
+```
+* We cans see that the slapd service is running
+* Now we have to stop the slapd service to reset the ldap directory database bye following the steps
+* We will create a domain name Dogobah.starwars
+```
+etu@serveur:~$ sudo systemctl stop slapd
+etu@serveur:~$ systemctl status slapd
+○ slapd.service - LSB: OpenLDAP standalone server (Lightweight Directory Access>
+     Loaded: loaded (/etc/init.d/slapd; generated)
+Package configuration
+
+
+
+
+
+
+    ┌────────────────────────┤ Configuring slapd ├─────────────────────────┐
+    │                                                                      │
+    │                                                                      │
+    │                                                                      │
+    │ Faut-il supprimer la base de données lors de la purge du paquet ?    │
+    │                                                                      │
+    │                   <Oui>                      <Non>                   │
+    │                                                                      │
+    └──────────────────────────────────────────────────────────────────────┘
+
+
+
+
+
+
+
+  Creating initial configuration... done.
+  Creating LDAP directory... done.
+etu@serveur:~$ sudo ldapsearch -LLL -Y EXTERNAL -H ldapi:/// -b "cn=config" \
+> olcSuffix | grep ^olcSuffix
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+olcSuffix: dc=Dagobah,dc=starwars
+```
+
+# Composition of a new LDAP directory
+* Search on Dagobah.starwars DC
+```
+etu@serveur:~$sudo ldapsearch -LLL -Y EXTERNAL -H ldapi:/// -b "dc=Dagobah,dc=starwars" \ 
+> -D cn=admin,dc=Dagobah,dc=starwars -W
+Enter LDAP Password:
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+dn: dc=Dagobah,dc=starwars
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Dagobah.starwars
+dc: Dagobah
+```
+* Show the current journalisation level of LDAP
+
+```
+etu@serveur:~$ sudo ldapsearch -LLL -Y EXTERNAL -H ldapi:/// -b "cn=config" \
+> olcLogLevel | grep ^olcLogLevel
+SASL/EXTERNAL authentication started
+olcLogLevel: none
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+```
+* Let's now create a file to change the level of the log. We put the olcLogLevel to stats
+```  
+etu@serveur:~$ mkdir -p $HOME/ldif && cd $HOME/ldif
+etu@serveur:~/ldif$ cat > setolcLogLevel2stats.ldif << EOF
+> # Set olcLogLevel to "stats"
+> dn: cn=config
+> changetype: modify
+> replace: olcLogLevel
+> olcLogLevel: stats
+> EOF
+```
+* Apply the modification with ldapmodify command and show again the level of log
+```                                         
+etu@serveur:~/ldif$ sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f setolcLogLevel2stats.ldif
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+modifying entry "cn=config"
+
+sudo ldapsearch -LLL -Y EXTERNAL -H ldapi:/// -b "cn=config" \
+> olcLogLevel | grep ^olcLogLevel
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+olcLogLevel: stats
+```
+## Create an LDIF file named setolcLogLevel2none.ldif to change the LDAP logging level (olcLogLevel) to none.
+	- dn: cn=config : Specifies that the modification applies to the global configuration.
+	- changetype: modify: Indicates that we are modifying an existing entry.
+	- replace: olcLogLevel : Replaces the current value of olcLogLevel with none.
+```
+etu@serveur:~/ldif$ cat > setolcLogLevel2none.ldif << EOF
+> # Set olcLogLevel to "none"
+> dn: cn=config
+> changetype: modify
+> replace: olcLogLevel
+> olcLogLevel: none
+> EOF
+
+etu@serveur:~/ldif$ cat setolcLogLevel2none.ldif
+# Set olcLogLevel to "none"
+dn: cn=config
+changetype: modify
+replace: olcLogLevel
+olcLogLevel: none
+```
+
+etu@serveur:~/ldif$ cat > ou.ldif << EOF
+> dn: ou=people,dc=Dagobah,dc=starwars
+> objectClass: organizationalUnit
+> ou: people
+>
+> dn: ou=groups,dc=Dagobah,dc=starwars
+> objectClass: organizationalUnit
+> ou: groups
+> EOF
+
+etu@serveur:~/ldif$ sudo ldapadd -cxWD cn=admin,dc=Dagobah,dc=starwars -f ou.ldif=admin,dc=Dagobah,dc=starwars -f ou.ldif
+Enter LDAP Password:
+adding new entry "ou=people,dc=Dagobah,dc=starwars"
+
+adding new entry "ou=groups,dc=Dagobah,dc=starwars"
+etu@serveur:~/ldif$ sudo ldapsearch -LLL -x -H ldap:/// -b "dc=Dagobah,dc=starwars" \H ldap:/// -b "dc=Dagobah,dc=starwars" \
+> -D cn=admin,dc=Dagobah,dc=starwars -W
+Enter LDAP Password:
+dn: dc=Dagobah,dc=starwars
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Dagobah.starwars
+dc: Dagobah
+
+dn: ou=people,dc=Dagobah,dc=starwars
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=Dagobah,dc=starwars
+objectClass: organizationalUnit
+ou: groups
+
+
+etu@serveur:~/ldif$ man -k passwd | grep -i ldap
+ldappasswd (1)       - change the password of an LDAP entry
+slappasswd (8)       - OpenLDAP password utility
+etu@serveur:~/ldif$ sudo slappasswd
+New password:
+Re-enter new password:
+{SSHA}MCKOSU7CGakkcCout6fL5x7yMO1WWYHZ
+
+etu@serveur:~/ldif$ openssl rand -base64 16 | tr -d '=' > user.passwd
+etu@serveur:~/ldif$ cat user.passwd
+Lrx1t7GokAdOj0m2q70pgQ
+etu@serveur:~/ldif$ sudo slappasswd -v -h "{SSHA}" -s $(cat user.passwd)
+{SSHA}youOHH/XnoNUsDmT+lG1fAYIKCLU5lfw
+
+
+
+etu@serveur:~/ldif$ sudo ldapadd -cxWD cn=admin,dc=Dagobah,dc=starwars -f users.ldif
+Enter LDAP Password:
+adding new entry "uid=padme,ou=people,dc=Dagobah,dc=starwars"
+
+adding new entry "uid=anakin,ou=people,dc=Dagobah,dc=starwars"
+
+adding new entry "uid=leia,ou=people,dc=Dagobah,dc=starwars"
+
+adding new entry "uid=luke,ou=people,dc=Dagobah,dc=starwars"
+
+etu@serveur:~/ldif$
