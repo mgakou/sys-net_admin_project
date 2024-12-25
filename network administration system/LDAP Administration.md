@@ -1,7 +1,7 @@
 # Context 
 * This tutorial explores the LDAP directory service. We give a brief introduction to the components of a directory, and then study the configuration of a directory service based on OpenLDAP software. We then look at how to configure access to directory entries from a client workstation. The information delivered by the directory is the user account properties stored in the posixAccount object class.
 
-# I use 2 machines : One for the LDAP server and the other for the client
+### I use 2 machines : One for the LDAP server and the other for the client
 
 # LDAP Server Configuration
 
