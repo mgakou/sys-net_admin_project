@@ -32,7 +32,7 @@ Compte-Rendu
 
 2. # Conception du schéma {#conception-du-schéma}
 
-![][image2]  
+![][ressources/TP2/image7]  
  		 *Figure 1: Schéma réseau illustrant le client, l’ AD et WSUS.* 
 
 ![][image3]  
