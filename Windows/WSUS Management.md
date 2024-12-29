@@ -28,7 +28,7 @@ Compte-Rendu
 
  # 1. Prérequis {#prérequis}
 
-   Nous conservons l’AD du 1er TP, ensuite nous installons une VM qui sera notre serveur WSUS et joint au domaine AD; le client du travaux pratiques 1 est aussi maintenu et joint au domaine.
+   Nous conservons l’AD du 1er TP (TP1-Authentification), ensuite nous installons une VM qui sera notre serveur WSUS et joint au domaine AD; le client du travaux pratiques 1 est aussi maintenu et joint au domaine.
 
 # 2.  Conception du schéma {#conception-du-schéma}
 
