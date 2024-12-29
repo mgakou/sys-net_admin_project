@@ -1,11 +1,10 @@
 # Objective: Understand securing an Active Directory server
 ## SKILLS :
-- Discover how to carry out a security audit on an AD
-- Master the attributes of an account
-- Master the GPOs linked to WSUS
-![][image1]
+- Découvrir la réalisation d’un audit de sécurité sur un AD
+- Maitriser les attributs d’un compte
+- Maitriser les GPOs liées à WSUS
 
-TP 3 : Sécurisation 
+# TP 3 : Sécurisation 
 
 GAKOU Mohamed et Khaled Salah
 
@@ -30,7 +29,7 @@ Sommaire
  
 
 
-![][image2]
+![](ressources/TP3-Security/image27.jpg)
 
 ***Schéma d’un réseau sécurisé***
 
@@ -41,21 +40,21 @@ Pour renforcer la sécurité du domaine, le contrôle de domaine 2 ainsi que le 
    Activation de l’AES dans ***GPO Editor \> Policies \> Windows Settings \> Security setting \> Local Policies \> Security Options.***  
     
 
-![][image3]
+![](ressources/TP3-Security/image21.png)
 
 ***Selection : Configure encryption types allowed for kerberos***
 
-![][image4]
+![](ressources/TP3-Security/image24.png)
 
 ***Selection : AES128\_HMAC\_SHA1***
 
 Ensuite nous faisons un **klist** après une déconnexion pour voir les tickets en cache (cf à l’image ci dessous)
 
-![][image5]
+![](ressources/TP3-Security/image4.png)
 
 **Affichage des tickets klist**
 
-![][image6]
+![](ressources/TP3-Security/image11.png)
 
 Sur l’image ci-dessus, la valeur du paramètre ms-Ds-MachineAccountQuota désigne  le nombre de comptes utilisateurs que peut créer un utilisateur non administrateur. Par défaut, la valeur est fixée à 10\.
 
@@ -107,15 +106,15 @@ Seuls les administrateurs ou les utilisateurs autorisés devraient pouvoir lire,
 2. **Mise en place**  
    Nous utilisons le planificateur de tâche pour exécuter le script une fois par semaine tous les dimanches. Nous donnons le nom du script, le trigger sera l'exécution une tous les dimanches et l’action sera l'exécution du script (cf aux images ci dessous)
 
-![][image7]
+![](ressources/TP3-Security/image1.png)
 
 ***Création de la tâche*** 
 
-![][image8]
+![](ressources/TP3-Security/image19.png)
 
 ***Création du Trigger (tous les dimanches)***
 
-![][image9]
+![](ressources/TP3-Security/image13.png)
 
 ***Mise en place de l’action effectuée***
 
@@ -123,27 +122,25 @@ Seuls les administrateurs ou les utilisateurs autorisés devraient pouvoir lire,
 
 Le score actuel du pingcastle montre un score de 55 (cf image ci dessous). 
 
-![][image10]
+![](ressources/TP3-Security/image20.png)
 
 ***Score pingcastle***
 
 La résolution du premier problème consiste à autoriser le NTLMv2 et d’interdire LM et NTLM. Pour cela nous nous rendons dans ***GPO Editor \> Policies \> Windows Settings \> Security setting \> Local Policies \> Security Options.*** Dans  Network security: LAN Manager authentication level, nous sélectionnons “Send NTLMv2 response only. Refuse LM & NTLM” (comme dans les images ci dessous) 
 
-![][image11]
-
+![](ressources/TP3-Security/image21.png)
 ***Autoriser NTLMv2***
 
-![][image12]
+![](ressources/TP3-Security/image22.png)
 
-***Autoriser NTLMv2***
+***Autoriser NTLMv2 seulement***
 
 La résolution du deuxième problème consiste à interdire la création de comptes utilisateurs à un utilisateur non administrateur. Ce qui revient à mettre à 0 la valeur du **ms-Ds-MachineAccountQuota** (cf à l’image dessous)
 
-![][image13]
-
+![](ressources/TP3-Security/image8.png)
 ***Changement de valeur du ms-Ds-MachineAccountQuota***
 
-**Stratégie du mots de passe du contrôleur de domaine:**
+### Stratégie du mots de passe du contrôleur de domaine
 
 Le problème décrit concerne la politique de mot de passe du domaine, qui permet peut-être des mots de passe de longueur inférieure à 8 caractères, ce qui peut poser un risque de sécurité. Voici comment nous l’avons résolu :
 
@@ -152,11 +149,11 @@ Le problème décrit concerne la politique de mot de passe du domaine, qui perme
   * On modifie  la **longueur minimale du mot de passe** pour **8 caractères** ou plus.  
   * Ensuite on valide avec **gpupdate /force.**  Cf à l’image ci-dessous
 
-![][image14]
+![](ressources/TP3-Security/image14.png)
 
-![][image15]
+![](ressources/TP3-Security/image7.png)
 
-**Recycle bin**
+### Recycle bin
 
 L’objectif est de s’assurer que Recycle Bin feature est activé.
 
@@ -166,28 +163,32 @@ Pour cela, on fait :
 
 Puis on vérifie avec **Get-ADOptionalFeature \-Filter {Name \-eq "Recycle Bin Feature"}** si IsDisableable \= false
 
-![][image16]
+![](ressources/TP3-Security/image18.png)
 
-![][image17]
+![](ressources/TP3-Security/image12.png)
 
-**Sauvegarde AD**
+### Sauvegarde AD
 
 Le problème concerne la nécessité de vérifier que les sauvegardes de l’Active Directory (AD) sont à jour et réalisées selon les normes recommandées par Microsoft.
 
 Tout d’abord, on crée une partition NTFS  qui sera dans le chemin C:\\PNTFS qui sauvegardera l’AD.(cf sur l’image ci-dessous)
 
-![][image18]
+![](ressources/TP3-Security/image5.png)
 
 Puis nous passons à l’installation de la fonctionnalité **Sauvegarde Windows Server dans Outils et fonctionnalité**
-
+![](ressources/TP3-Security/image26.png)
 On commence alors la sauvegarde grâce à la commande **: wbadmin start systemstatebackup \-backuptarget:C:\\PNTFS:** (Cf image 18\)
+![](ressources/TP3-Security/image25.png)
 
-**Administrateur natif**
+
+### Administrateur natif
 
 Le problème décrit concerne l'utilisation du compte Administrateur natif (le compte Administrateur intégré), qui représente un risque de sécurité s'il est utilisé de manière routinière ou mal sécurisé. 
 
 Tout d’abord, on crée un user AdminAD qui aura tous les droits de l’administrateur (cf image 19 et 20 )
+![](ressources/TP3-Security/image9.png)
 
+![](ressources/TP3-Security/image6.png)
 On se connecte maintenant au nouveau compte pour tester s’il a tous les droits de l’administrateur
 
 Nous pouvons vérifier qu’il appartient au groupe **Admins Domain** mais nous allons juste vérifier les droits effectifs en faisant un test basique (ajout et suppression de compte) cf image 21\. 
