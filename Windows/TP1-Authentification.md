@@ -140,7 +140,7 @@ Ces échanges correspondent à la deuxième phase, où le client utilise le TGT 
 	•	**KRB5KDC\_ERR\_PREAUTH\_REQUIRED (ex. ligne 160\)** :  
 Cette erreur indique que le KDC demande des informations supplémentaires pour continuer le processus (par exemple, une preuve cryptographique pour valider l’identité).
 
-### **NTLM Client non joint
+### NTLM Client non joint
 
 Dans cette partie, nous créons un répertoire nommé “iwanttoaccess” sur l’AD (cf image 14). Ce dossier sera accessible sur la machine cliente non issus du domaine mais appartenant au même réseau que l’AD sous le chemin : *\\\\AD1\\Users\\Administrateur\\Downloads\\iwanttoaccess*   
 Et en fournissant les identifiants de l’AD depuis la machine cliente conformément à  image 15 ci-dessous  
