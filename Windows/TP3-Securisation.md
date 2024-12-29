@@ -26,7 +26,7 @@ Sommaire
 
 ## Prérequis 
 
-Nous continuons toujours avec la meme topologie que dans les 2 premiers TPs.
+Nous continuons toujours avec la même topologie que dans les 2 premiers TPs.
 
 ## 1. **Conception du schéma de votre infrastructure:** {#conception-du-schéma-de-votre-infrastructure:}
 
