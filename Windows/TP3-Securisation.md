@@ -14,20 +14,21 @@ Compte-Rendu
 
 Sommaire
 
-[**I. Conception du schéma de votre infrastructure:	3**](#conception-du-schéma-de-votre-infrastructure:)
+### I. Conception du schéma de votre infrastructure
 
-[**II. Stratégie de groupe	4**](#stratégie-de-groupe)
+### II. Stratégie de groupe
 
-[**III. Sécuriser les comptes:	7**](#sécuriser-les-comptes:)
+### III. Sécuriser les comptes
 
-[**IV. Les scripts d’administration:	8**](#les-scripts-d’administration:)
+### IV. Les scripts d’administration
 
-[**V. Audit de sécurité:	11**](#audit-de-sécurité:)
+### V. Audit de sécurité
 
-1. ## **Conception du schéma de votre infrastructure:** {#conception-du-schéma-de-votre-infrastructure:}
+## Prérequis 
 
- 
+Nous continuons toujours avec la meme topologie que dans les 2 premiers TPs.
 
+## 1. **Conception du schéma de votre infrastructure:** {#conception-du-schéma-de-votre-infrastructure:}
 
 ![](ressources/TP3-Security/image27.jpg)
 
@@ -35,30 +36,27 @@ Sommaire
 
 Pour renforcer la sécurité du domaine, le contrôle de domaine 2 ainsi que le serveur de stockage ont été repositionnés dans un réseau privé isolé. Cette reconfiguration place ces serveurs dans une zone protégée, séparée du reste de l’infrastructure, minimisant ainsi leur exposition à d’éventuelles menaces externes. En les confiant à un réseau restreint et inaccessible depuis l'extérieur, les risques d’attaques ou de compromission sont réduits. De cette manière, le cloisonnement des ressources sensibles assure une meilleure confidentialité des données tout en limitant la surface d’attaque potentielle.
 
-2. ## **Stratégie de groupe** {#stratégie-de-groupe}
+## 2. Stratégie de groupe
 
-   Activation de l’AES dans ***GPO Editor \> Policies \> Windows Settings \> Security setting \> Local Policies \> Security Options.***  
-    
+ Activation de l’AES dans ***GPO Editor \> Policies \> Windows Settings \> Security setting \> Local Policies \> Security Options.***  
+
 
 ![](ressources/TP3-Security/image21.png)
 
 ***Selection : Configure encryption types allowed for kerberos***
 
 ![](ressources/TP3-Security/image24.png)
-
 ***Selection : AES128\_HMAC\_SHA1***
 
+
 Ensuite nous faisons un **klist** après une déconnexion pour voir les tickets en cache (cf à l’image ci dessous)
-
 ![](ressources/TP3-Security/image4.png)
-
 **Affichage des tickets klist**
 
 ![](ressources/TP3-Security/image11.png)
-
 Sur l’image ci-dessus, la valeur du paramètre ms-Ds-MachineAccountQuota désigne  le nombre de comptes utilisateurs que peut créer un utilisateur non administrateur. Par défaut, la valeur est fixée à 10\.
 
-3. ## **Sécuriser les comptes:** {#sécuriser-les-comptes:}
+## 3. Sécuriser les comptes
 
 **Le script :**
 
@@ -95,36 +93,38 @@ Send-MailMessage \-SmtpServer $smtpServer \-Port $smtpPort \-From $senderEmail \
 
 Write-Host "Script terminé. Les comptes d'utilisateur expirés ont été supprimés, et un e-mail de notification a été envoyé."
 
-4. ## **Les scripts d’administration:** {#les-scripts-d’administration:}
+## 4. Les scripts d’administration
 
-1. **Emplacement**
+ ### 1. Emplacement
 
 Pour sécuriser le script, nous pouvons le garder sur notre machine AD car ceci est accessible uniquement au administrateur. Toutefois, nous pouvons aussi mettre en place un fichier partagé avec accès restreint  sur un serveur.
 
 Seuls les administrateurs ou les utilisateurs autorisés devraient pouvoir lire, exécuter ou modifier ces scripts. Cet  emplacement centralisé facilite la gestion des scripts et les mises à jour.
 
-2. **Mise en place**  
+### Mise en place
    Nous utilisons le planificateur de tâche pour exécuter le script une fois par semaine tous les dimanches. Nous donnons le nom du script, le trigger sera l'exécution une tous les dimanches et l’action sera l'exécution du script (cf aux images ci dessous)
 
 ![](ressources/TP3-Security/image1.png)
-
 ***Création de la tâche*** 
 
-![](ressources/TP3-Security/image19.png)
 
+![](ressources/TP3-Security/image19.png)
 ***Création du Trigger (tous les dimanches)***
 
-![](ressources/TP3-Security/image13.png)
 
+![](ressources/TP3-Security/image13.png)
 ***Mise en place de l’action effectuée***
 
-5. ## **Audit de sécurité:**  {#audit-de-sécurité:}
+## 5. Audit de sécurité
 
-Le score actuel du pingcastle montre un score de 55 (cf image ci dessous). 
+PingCastle est un outil d’audit de sécurité conçu pour évaluer rapidement et efficacement la sécurité des environnements Active Directory (AD). Cet outil aide les administrateurs systèmes et les équipes de sécurité à identifier les vulnérabilités et les mauvaises configurations susceptibles de compromettre un AD. PingCastle génère un rapport détaillé, mettant en évidence les risques critiques, les failles potentielles, et les axes d’amélioration pour renforcer la résilience de l’infrastructure. Parmi ses fonctionnalités clés figurent l’analyse des droits d’accès, la détection des comptes à privilèges excessifs, la vérification des mises à jour et des patchs, ainsi que l’identification des relations de confiance entre domaines. Sa simplicité d’utilisation et sa capacité à fournir des résultats exploitables en peu de temps en font un outil précieux pour la gestion proactive de la sécurité. Vous pouvez le télécharger ici : https://www.pingcastle.com/download/
+
+Le score actuel du pingcastle de l'environnement montre un score de 55 (cf image ci dessous). Dans cette partie nous resolvons quelques strategies de sécurité
 
 ![](ressources/TP3-Security/image20.png)
-
 ***Score pingcastle***
+
+### NTLM2 only
 
 La résolution du premier problème consiste à autoriser le NTLMv2 et d’interdire LM et NTLM. Pour cela nous nous rendons dans ***GPO Editor \> Policies \> Windows Settings \> Security setting \> Local Policies \> Security Options.*** Dans  Network security: LAN Manager authentication level, nous sélectionnons “Send NTLMv2 response only. Refuse LM & NTLM” (comme dans les images ci dessous) 
 
@@ -132,7 +132,6 @@ La résolution du premier problème consiste à autoriser le NTLMv2 et d’inter
 ***Autoriser NTLMv2***
 
 ![](ressources/TP3-Security/image10.png)
-
 ***Autoriser NTLMv2 seulement***
 
 ### Problème ms-DsMachineAccountQuote
