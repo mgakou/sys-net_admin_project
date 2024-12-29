@@ -226,13 +226,13 @@ Nous remarquons l’heure à laquelle le ticket a été fourni et aussi l’adre
 
 La politique de sécurité que nous mettrons en place consiste à renouveler le mot de passe de KERBEROS tous les 180 jours de manière automatique (Task Scheduler).
 
-1. ### Script  {#script}
+### 1. Script
 
    Écrire le script dans notepad et l'enregistrer, nous notons que le script doit être exécuté 2 fois de suite car ceci est recommandé. Nous sauvegardons le fichier sous **“mdptousles180jrs.ps1”**
    
    ![](ressources/TP1/image22.png)
 
-3. ### Task Scheduler {#task-scheduler}
+### 3.  Task Scheduler
 
    Ensuite nous planifions une tâche (Planificateur de tâche) qui s'exécutera tous les 6 mois :   
 
@@ -246,7 +246,7 @@ La politique de sécurité que nous mettrons en place consiste à renouveler le 
 
    ![](ressources/TP1/image23.png)   
 
-5. ### Implication :  {#implication-:}
+### 5. Implication
 
    1. Lorsqu'un attaquant parvient à déchiffrer le mot de passe du compte KRBTGT, il a la possibilité de générer des Golden Tickets qui lui permettent d'accéder à n'importe quelle ressource du domaine sans être détectable, même après la réinitialisation des comptes utilisateurs. Cela peut entraîner une rupture complète dans le domaine.  
    2. Effet d'une réinitialisation incorrecte :  
@@ -377,13 +377,13 @@ Nous somme donc authentifié comme DOM1\\Administrateur
      
    **La deuxième étape** consiste à authentifier l'utilisateur auprès du serveur LDAP. Il existe différentes méthodes pour accomplir cela : en utilisant une authentification simple (nom d'utilisateur/mot de passe) ou en utilisant des protocoles sécurisés tels que Kerberos ou NTLM via SASL (Layer Simple d'Authentification et de Sécurité).
 
-4. ### Protocole utilisé  {#protocole-utilisé}
+4. ### Protocole utilisé
 
    LDAP est le protocole utilisé, il est utilisé pour effectuer des recherches, ajouter ou supprimer des objets dans la structure hiérarchique de l'annuaire Active Directory.  
      
    
 
-   ## Conclusion  {#conclusion}
+   ## Conclusion
 
 Au fil de notre progression, nous avons traversé plusieurs étapes cruciales pour configurer et gérer efficacement notre environnement Active Directory sur des machines virtuelles Windows Server. En partant des problèmes de connectivité réseau et de configuration d'IP statique, nous avons ajusté les paramètres de pare-feu et envisagé des solutions comme le DHCP pour améliorer la connexion. Ensuite, nous avons réussi à intégrer nos machines au domaine AD, en corrigeant des erreurs d'identifiants et en assurant que les bonnes informations étaient utilisées.
 
