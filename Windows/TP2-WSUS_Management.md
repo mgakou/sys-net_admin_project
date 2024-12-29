@@ -35,7 +35,7 @@ Compte-Rendu
 
 WSUS(Windows Server Update Services) est un service essentiel pour la gestion centralisée des mises à jour Microsoft au sein d’un réseau d’entreprise. Il facilite la synchronisation, l’approbation, la gestion et le suivi des mises à jour, ce qui permet de renforcer la sécurité, d’améliorer la stabilité des systèmes, tout en optimisant l’utilisation de la bande passante Internet.
 
- # 3.  Configuration basique {#configuration-basique}
+ # 3.  Configuration basique
 
      
    Le serveur WSUS fonctionne sur un système Windows Server spécialement dédié   
@@ -73,7 +73,7 @@ La figure 7 nous montre les fonctionnalités ajoutées.
 
 Après avoir ajouter les fonctionnalités, nous synchronisons l’AD au serveur WSUS grâce à **mmc.exe**, la figure 8 nous montre l’affichage des synchronisations faites.
 
- # 4. Organisation des mises à jour  {#organisation-des-mises-à-jour}
+ # 4. Organisation des mises à jour
 
 Dans notre stratégie de gestion des mises à jour via WSUS, nous divisons les machines en deux groupes afin de tester les mises à jour avant de les déployer sur l'ensemble du réseau. Le groupe Test contient une machine de test, comme un serveur non critique ou un poste de travail. Ce groupe nous permet de vérifier si les mises à jour causent des problèmes ou s’installent correctement. Le groupe Production inclut toutes les autres machines. Ces machines ne recevront les mises à jour qu’après validation dans le groupe Test.
 
@@ -85,7 +85,7 @@ Nous appliquons en priorité les mises à jour de sécurité, qui sont essentiel
 
 Enfin, nous vérifions chaque semaine l’état des mises à jour installées à travers la console WSUS et les rapports. Cela nous permet de suivre les mises à jour réussies ou échouées. Nous avons configuré les mises à jour du groupe Test pour être appliquées automatiquement, tandis que celles du groupe Production sont appliquées manuellement, garantissant un contrôle total avant leur déploiement sur les systèmes critiques.
 
-# 5. Politique de mise à jour {#politique-de-mise-à-jour}
+# 5. Politique de mise à jour
 
 Nous commençons donc à mettre en place l’organisation proposée en créant les 2 GPOs sur le serveur AD comme ci dessus: 1 GPO Test et 1 GPO Production   
 ![](ressources/TP2/image11.png)  
@@ -113,7 +113,7 @@ A  partir de la commande **Set-GPRegistryValue** *(cf image 11 à 15\)*, nous av
 ![](ressources/TP2/image2.png)  
 ***Figure 15: Vérification depuis l’AD de la présence des organisations mise en place***
 
-# 6.  Sécurisation {#sécurisation}
+# 6.  Sécurisation
 
      
    Pour assurer une sécurité robuste du serveur WSUS et optimiser la gestion des mises à jour, il est crucial de mettre en place plusieurs dispositifs complémentaires.  
@@ -123,7 +123,7 @@ A  partir de la commande **Set-GPRegistryValue** *(cf image 11 à 15\)*, nous av
    En combinant ces différentes stratégies, le serveur WSUS sera mieux protégé contre les menaces internes et externes tout en garantissant une continuité opérationnelle optimale.  
    
 
- # 7. Un peu d’imagination {#un-peu-d’imagination}
+ # 7. Un peu d’imagination
 
 Exemple du script pour affecter des postes à des groupes WSUS et vérifier leur état de mise à jour: 
 
