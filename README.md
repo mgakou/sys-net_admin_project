@@ -5,11 +5,11 @@ Welcome to my GitHub repository documenting my practical work (labs) and project
 ## Repository Structure
 
 ### 1. Folder: Windows
-This folder contains labs focused on system administration in Windows environments.
+This folder contains labs focused on system administration in Windows environments.\
 	•	TP1-Authentification.md:
-Configuration and management of authentication mechanisms in an Active Directory environment.
+Configuration and management of authentication mechanisms in an Active Directory environment.\
 	•	TP2-WSUS_Management.md:
-Implementation and management of WSUS (Windows Server Update Services) for centralized Windows updates.
+Implementation and management of WSUS (Windows Server Update Services) for centralized Windows updates.\
 	•	TP3-Securisation.md:
 Securing an Active Directory domain using PingCastle, managing Kerberos and NTLM policies.
 
