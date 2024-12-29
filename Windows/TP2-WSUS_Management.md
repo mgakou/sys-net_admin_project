@@ -38,9 +38,8 @@ WSUS(Windows Server Update Services) est un service essentiel pour la gestion ce
  # 3.  Configuration basique
 
      
-   Le serveur WSUS fonctionne sur un système Windows Server spécialement dédié   
-   cette tâche.  
-   Après avoir configuré les adresses ip et faire les pings nécessaires comme c’est indiqué dans la figure 3, pour installer le serveur WSUS, la première étape consiste à lancer la commande suivante:  
+   Le serveur WSUS fonctionne sur un système Windows Server spécialement dédié à cette tâche.  
+   Après avoir configurer les adresses ip et faire les pings nécessaires comme c’est indiqué dans la figure 3, pour installer le serveur WSUS, la première étape consiste à lancer la commande suivante:  
    **Install-WindowsFeature \-Name UpdateServices** comme l'indique la figure 4\.  
    
    ![](ressources/TP2/image16.png)
