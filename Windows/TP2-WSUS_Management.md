@@ -11,25 +11,19 @@ GAKOU Mohamed
 
 Compte-Rendu
 
-[I. Prérequis	3](#prérequis)
+### I. Prérequis	3
+### II. Conception du schéma
+### III Configuration basique
+### IV. Organisation des mises à jour
+### V. Politique de mise à jour
+### VI. Sécurisation
+### VII. Un peu d’imagination
 
-[II. Conception du schéma	3](#conception-du-schéma)
-
-[III. Configuration basique	4](#configuration-basique)
-
-[IV. Organisation des mises à jour	7](#organisation-des-mises-à-jour)
-
-[V. Politique de mise à jour	8](#politique-de-mise-à-jour)
-
-[VI. Sécurisation	14](#sécurisation)
-
-[VII. Un peu d’imagination	15](#un-peu-d’imagination)
-
- # 1. Prérequis {#prérequis}
+ # 1. Prérequis
 
    Nous conservons l’AD du 1er TP (TP1-Authentification), ensuite nous installons une nouvelle VM qui sera notre serveur WSUS et joint au domaine AD; le client du travaux pratiques 1 est aussi maintenu et joint au domaine.
 
-# 2.  Conception du schéma {#conception-du-schéma}
+# 2.  Conception du schéma
 
 ![](ressources/TP2/image7.jpg)
 
