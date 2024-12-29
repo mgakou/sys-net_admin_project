@@ -1,7 +1,7 @@
 # Objectifs : 
-* - Comment installer un service sur Windows. Même si des détails divergent, les services s'installent et se configurent de manière similaires.
-* - Comment élaborer une stratégie (Voir le contexte global, les forces et les faiblesses du mise en oeuvre)
-* - Les notions liées à la sécurité
+ - Comment installer un service sur Windows. Même si des détails divergent, les services s'installent et se configurent de manière similaires.
+ - Comment élaborer une stratégie (Voir le contexte global, les forces et les faiblesses du mise en oeuvre)
+ - Les notions liées à la sécurité
 
 TP 2 : Mise en place d’un Serveur WSUS
 
