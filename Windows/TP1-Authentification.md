@@ -5,16 +5,16 @@
 *	- Understand NTLM and LDAP
 ![](ressources/TP1/image10.jpg)
 
-MOHAMED GAKOU M1 SSIR  & KHALED SALAH STRI2A
+MOHAMED GAKOU
 
 9 Décembre 2024  
-**Sommaire**
+## Sommaire
 
-**0.Étape préliminaire**
+## 0.Étape préliminaire
 
-**1.Conception du schéma de l’infrastructure :**
+## 1.Conception du schéma de l’infrastructure
 
-**2. Analyse Wireshark**
+## 2. Analyse Wireshark
 
 [**KERBEROS \- Client joint au domaine	9**](#kerberos---client-joint-au-domaine)
 
