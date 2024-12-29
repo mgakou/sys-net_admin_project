@@ -1,6 +1,9 @@
-
+# Presentation
+As part of this practical work, we will explore the configuration and use of the Network File System (NFS) on Ubuntu, a high-performance file-sharing protocol widely used in Linux environments. The primary objective is to set up an NFS server capable of sharing directories with an NFS client over a local network. Students will learn how to install and configure NFS services on two virtual or physical machines, one acting as the server and the other as the client, to enable secure and transparent access to shared files.
+We have a default ip which give us access to internet : 192.168.237.129/27
 # Config machine 
-## Server ip configuration and ping test
+## Server ip configuration and ping test to client
+* Config of IPs via netplan using the YAML file (Server ip is : 192.168.237.124/27)
 ```
 etu@localhost:~$ cat /etc/netplan/enp0s1.yaml 
 network:
@@ -38,7 +41,9 @@ etu@localhost:~$ ip neighbor
 172.16.0.2 dev enp0s1 FAILED 
 fe80:ed::1 dev enp0s1 lladdr e8:eb:34:cc:f4:ca router STALE 
 ```
-## Client ip configuration and ping test
+## Client ip configuration and ping test to server
+* Config of IPs via netplan using the YAML file (Client ip is : 192.168.237.123/27)
+
 ```
 cat /etc/netplan/cat /etc/netplan/enp0s1.yaml 
 network:
