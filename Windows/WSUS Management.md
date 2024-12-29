@@ -33,7 +33,7 @@ Compte-Rendu
 2. # Conception du schéma {#conception-du-schéma}
 
 ![](ressources/TP2/image7.jpg)
- 		 *Figure 1: Schéma réseau illustrant le client, l’ AD et WSUS.* 
+***Figure 1: Schéma réseau illustrant le client, l’ AD et WSUS.***
 
 ![](ressources/TP2/image4.png)
 ***Figure 2: Le fonctionnement de WSUS serveur.***
@@ -47,7 +47,7 @@ WSUS(Windows Server Update Services) est un service essentiel pour la gestion ce
    cette tâche.  
    Après avoir configuré les adresses ip et faire les pings nécessaires comme c’est indiqué dans la figure 3, pour installer le serveur WSUS, la première étape consiste à lancer la commande suivante:  
    **Install-WindowsFeature \-Name UpdateServices** comme l'indique la figure 4\.  
-   ![][image4]
+   ![](ressources/TP2/image16.png)
 
    *Figure 3: Tester la connectivité*
 
