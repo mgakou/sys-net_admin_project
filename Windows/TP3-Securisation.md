@@ -57,6 +57,7 @@ Ensuite nous faisons un **klist** après une déconnexion pour voir les tickets 
 Sur l’image ci-dessus, la valeur du paramètre ms-Ds-MachineAccountQuota désigne  le nombre de comptes utilisateurs que peut créer un utilisateur non administrateur. Par défaut, la valeur est fixée à 10\.
 
 ## 3. Sécuriser les comptes
+Script qui supprime les comptes expirés et vous envoie un mail pour vous prévenir
 
 **Le script :**
 
