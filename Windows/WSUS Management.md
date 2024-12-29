@@ -26,11 +26,11 @@ Compte-Rendu
 
 [VII. Un peu d’imagination	15](#un-peu-d’imagination)
 
-1. # Prérequis {#prérequis}
+ # 1. Prérequis {#prérequis}
 
    Nous conservons l’AD du 1er TP, ensuite nous installons une VM qui sera notre serveur WSUS et joint au domaine AD; le client du travaux pratiques 1 est aussi maintenu et joint au domaine.
 
-2. # Conception du schéma {#conception-du-schéma}
+# 2.  Conception du schéma {#conception-du-schéma}
 
 ![](ressources/TP2/image7.jpg)
 
@@ -42,7 +42,7 @@ Compte-Rendu
 
 WSUS(Windows Server Update Services) est un service essentiel pour la gestion centralisée des mises à jour Microsoft au sein d’un réseau d’entreprise. Il facilite la synchronisation, l’approbation, la gestion et le suivi des mises à jour, ce qui permet de renforcer la sécurité, d’améliorer la stabilité des systèmes, tout en optimisant l’utilisation de la bande passante Internet.
 
-3. # Configuration basique {#configuration-basique}
+ # 3.  Configuration basique {#configuration-basique}
 
      
    Le serveur WSUS fonctionne sur un système Windows Server spécialement dédié   
@@ -51,7 +51,7 @@ WSUS(Windows Server Update Services) est un service essentiel pour la gestion ce
    **Install-WindowsFeature \-Name UpdateServices** comme l'indique la figure 4\.  
    ![](ressources/TP2/image16.png)
 
-   *Figure 3: Tester la connectivité*
+   ***Figure 3: Tester la connectivité***
 
 ![](ressources/TP2/image15.png)  
 ***Figure 4: Installation du serveur WSUS***   
@@ -59,19 +59,19 @@ WSUS(Windows Server Update Services) est un service essentiel pour la gestion ce
 
 Pour vérifier que le serveur WSUS est bien installé on a exécuté la commande:   
 **Get-Service \-Name WsusService** et comme indique la figure 5 que le serveur est bien installé.  
-  ![][image6]   
+![](ressources/TP2/image9.png)     
 ***Figure 5: Vérification de l’Installation WSUS***
 
     
 
-![][image7]  
+![](ressources/TP2/image12.png)  
  ***Figure 6: Installation des fonctionnalités***  
 Puis comme indique la figure ci-dessus(figure 6), on passe à la machine contenant notre Active Directory pour ajouter de nouvelles fonctionnalités.  
 La figure 7 nous montre les fonctionnalités ajoutées.  
-![][image8]   
+![](ressources/TP2/image6.png)   
 ***Figure 7: Les fonctionnalités ajoutés***
 
-![][image9]  
+![](ressources/TP2/image5.png) 
 ***Figure 8: Affichage des synchronisations***
 
 Après avoir ajouter les fonctionnalités, nous synchronisons l’AD au serveur WSUS grâce à **mmc.exe**, la figure 8 nous montre l’affichage des synchronisations faites.
@@ -91,26 +91,29 @@ Enfin, nous vérifions chaque semaine l’état des mises à jour installées à
 5. # Politique de mise à jour {#politique-de-mise-à-jour}
 
 Nous commençons donc à mettre en place l’organisation proposée en créant les 2 GPOs sur le serveur AD comme ci dessus: 1 GPO Test et 1 GPO Production   
-![][image10]  
+![](ressources/TP2/image11.png)  
 ***Figure 9: Création des GPOs Test & Production***
 
 Nous passons donc à la mise en place des groupes Test & Production sur notre serveur WSUS (si ils n’existent pas d’où le ***if***)
 
-![][image11]  
+![](ressources/TP2/image3.png)  
 ***Figure 10: Mise en place des Groupes Test et Production***
 
 A  partir de la commande **Set-GPRegistryValue** *(cf image 11 à 15\)*, nous avons configuré des stratégies de groupe (GPO) pour assigner les paramètres de mises à jour automatiques via WSUS. Pour le **groupe Test**, nous avons défini les mises à jour automatiques avec l’installation immédiate des mises à jour (option AUOptions \= 4). Pour le **groupe Production**, nous avons configuré le téléchargement des mises à jour, mais avec une notification pour installation manuelle (option AUOptions \= 3). Ces GPOs ont ensuite été liées aux Unités Organisationnelles (OU) correspondantes (OU\_TEST & OU\_PRODUCTION), permettant ainsi de différencier le comportement des mises à jour selon le groupe d’ordinateurs. Nous avons forcé l’application des stratégies avec la commande gpupdate /force et vérifier leur bonne application en générant des rapports.
 
+![](ressources/TP2/image8.png)
 ***Figure 11: Configuration des paramètres de strategies pour le groupe TEST***
 
+![](ressources/TP2/image14.png)
 ***Figure 12: Configuration des paramètres de strategies pour le groupe PRODUCTION***
 
-![][image12]  
+![](ressources/TP2/image1.png)  
 ***Figure 13: Affichage des OU (déja créer)***
 
-![][image13]  
+![](ressources/TP2/image11.png)  
 ***Figure 14: Liaison entre les GPO et les OUs***  
-![][image14]  
+
+![](ressources/TP2/image2.png)  
 ***Figure 15: Vérification depuis l’AD de la présence des organisations mise en place***
 
 6. # Sécurisation {#sécurisation}
