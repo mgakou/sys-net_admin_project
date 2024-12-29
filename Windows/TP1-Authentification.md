@@ -16,41 +16,17 @@ MOHAMED GAKOU
 
 ## 2. Analyse Wireshark
 
-[**KERBEROS \- Client joint au domaine	9**](#kerberos---client-joint-au-domaine)
+## 3. Compte KRBTGT
 
-[Explication des échanges (image 12 et image 13):	11](#explication-des-échanges-\(image-12-et-image-13\):)
+## 4. Politique de Sécurité
 
-[**NTLM \- Client non joint :	13**](#ntlm---client-non-joint-:)
+## 5. Silo
 
-[Explication des échanges :	15](#explication-des-échanges-:)
+## 6. Autres Authentifications
 
-[**3\. Compte KRBTGT	17**](#3.-compte-krbtgt)
+## Conclusion
 
-[**4\. Politique de Sécurité	21**](#4.-politique-de-sécurité)
-
-[1\. Script	21](#script)
-
-[2\. Task Scheduler	21](#task-scheduler)
-
-[3\. Implication :	23](#implication-:)
-
-[**5\. Silo	24**](#5.-silo)
-
-[**6\. Autres Authentifications	26**](#6.-autres-authentifications)
-
-[1\. Créons une GPO refusant les authentifications NTLM :	26](#créons-une-gpo-refusant-les-authentifications-ntlm-:)
-
-[Étapes pour créer une GPO pour interdire NTLM :	26](#étapes-pour-créer-une-gpo-pour-interdire-ntlm-:)
-
-[2\. Test de l’outils ldp.exe :	32](#test-de-l’outils-ldp.exe-:)
-
-[3\. Détail des deux étapes de la connexion à ldp.exe.	35](#détail-des-deux-étapes-de-la-connexion-à-ldp.exe.)
-
-[4\. Protocole utilisé	35](#protocole-utilisé)
-
-[**Conclusion	36**](#conclusion)
-
-## 0\. Étape préliminaire  {#0.-étape-préliminaire}
+## 0. Étape préliminaire
 
 Dans cette étape nous configurons les adresses réseaux sur l’AD et aussi sur le client joint au domaine : 
 
@@ -93,15 +69,13 @@ Le fonctionnement de Kerberos repose sur quatre étapes essentielles, avec l’u
    * Un **Service Ticket (ST)**, contenant la clé de session et d'autres informations, qui est chiffré avec la clé secrète du serveur cible (**Kserv**). Ces éléments sont ensuite renvoyés au client.  
 4. **Accès au service** : Le client utilise le **Service Ticket (ST)** pour accéder au serveur hébergeant le service ou l'application qu'il souhaite utiliser. Il envoie le **ST** au serveur, qui le déchiffre à l’aide de sa clé secrète (**Kserv**) et récupère la clé de session partagée (**Ks**). Si tout est valide, le serveur accorde l'accès au client. À partir de ce moment, toutes les communications entre le client et le serveur sont sécurisées à l'aide de cette clé de session (**Ks**).
 
-## **2\. Analyse Wireshark :**  {#2.-analyse-wireshark-:}
+## 2. Analyse Wireshark
 
-## **KERBEROS \- Client joint au domaine** {#kerberos---client-joint-au-domaine}
+### KERBEROS Client joint au domaine
 
 Tout d’abord, vérifions la configuration Kerberos dans le Gestionnaire de serveur depuis : Outils \> Gestions des stratégies de groupes \> Objets de stratégie de groupe \> Default Controller Domain \> Clic droit puis Modifier (conf image 9\) puis dérouler Stratégie \> Paramètre Windows \> Paramètre de sécurité \> Stratégie de comptes \> Stratégies Kerberos. Ainsi nous pouvons mettre la config souhaitée dans la partie droite (conf image 10).
 
 ![](ressources/TP1/image9-10.png)
-
-### 
 
 **2.1 Création de répertoire sur l’AD** 
 
@@ -166,7 +140,7 @@ Ces échanges correspondent à la deuxième phase, où le client utilise le TGT 
 	•	**KRB5KDC\_ERR\_PREAUTH\_REQUIRED (ex. ligne 160\)** :  
 Cette erreur indique que le KDC demande des informations supplémentaires pour continuer le processus (par exemple, une preuve cryptographique pour valider l’identité).
 
-## **NTLM \- Client non joint :** {#ntlm---client-non-joint-:}
+### **NTLM Client non joint
 
 Dans cette partie, nous créons un répertoire nommé “iwanttoaccess” sur l’AD (cf image 14). Ce dossier sera accessible sur la machine cliente non issus du domaine mais appartenant au même réseau que l’AD sous le chemin : *\\\\AD1\\Users\\Administrateur\\Downloads\\iwanttoaccess*   
 Et en fournissant les identifiants de l’AD depuis la machine cliente conformément à  image 15 ci-dessous  
@@ -187,7 +161,7 @@ En ouvrant wireshark sur l’AD et filtrant par ***ntlmssp*** nous voyons les é
 ![](ressources/TP1/image17.png)
 Image 17
 
-### **Explication des échanges :**  {#explication-des-échanges-:}
+### Explication des échanges
 
 1. **NTLMSSP\_NEGOTIATE** (Paquets 248 et 289\)  
    	•	Il s’agit de la première étape du processus d’authentification NTLM.  
@@ -220,7 +194,7 @@ Le processus NTLM se déroule en trois étapes principales :
 
 	3\.	**Authentification** (AUTH) : Le client renvoie une réponse calculée avec son mot de passe, et le serveur valide cette réponse.
 
-## **3\. Compte KRBTGT** {#3.-compte-krbtgt}
+## 3. Compte KRBTGT
 
 La réinitialisation du mot de passe KRBTGT force la régénération de nouveaux tickets Kerberos pour tous les utilisateurs, rendant inutiles les tickets obtenus avec des informations de sécurité précédemment compromises.
 
@@ -248,9 +222,7 @@ Nous remarquons l’heure à laquelle le ticket a été fourni et aussi l’adre
 
 ![](ressources/TP1/image21.png)
 
-## 
-
-## **4\. Politique de Sécurité**  {#4.-politique-de-sécurité}
+## 4. Politique de Sécurité
 
 La politique de sécurité que nous mettrons en place consiste à renouveler le mot de passe de KERBEROS tous les 180 jours de manière automatique (Task Scheduler).
 
@@ -281,7 +253,7 @@ La politique de sécurité que nous mettrons en place consiste à renouveler le 
       En cas de réinitialisation incorrecte du mot de passe du compte KRBTGT (par exemple, sans effectuer une double réinitialisation), cela peut provoquer l'invalidation de tous les tickets Kerberos du domaine. Il sera donc nécessaire que tous les utilisateurs se reconnectent et réinitialisent leurs tickets, ce qui peut entraîner des perturbations importantes dans l'accès aux ressources du réseau.  
         
         
-## **5\. Silo** {#5.-silo}
+## 5. Silo
 
 Dans notre infrastructure actuelle, nous avons identifié le besoin de sécuriser davantage l'accès administratif aux serveurs. Pour ce faire, nous proposons la mise en place :
 
@@ -318,7 +290,7 @@ Cette solution vise à réduire les risques d'accès non autorisés, améliorer 
 **Étape 2** : Création des comptes d’administration
 
 ![](ressources/TP1/image_admin_creation.png)
-## 
+
 
 **Étape 3** : Création des silos d’authentification
 
@@ -348,7 +320,7 @@ Nous créons l’OU ServeurBastion on lie la GPO au serveur bastion et on appliq
 
 ![](ressources/TP1/image41.png)
 
-## **6\. Autres Authentifications** {#6.-autres-authentifications}
+## 6. Autres Authentifications
 
 1. ### Créons une GPO refusant les authentifications NTLM :  {#créons-une-gpo-refusant-les-authentifications-ntlm-:}
 
@@ -379,7 +351,7 @@ Après avoir configuré la GPO, nous pouvons la lier à tout le domaine.
 Nous faisons un clic droit sur notre domaine puis sélectionnons **"Link an Existing GPO"** et choisir la GPO **"Disable NTLM Authentication"** que nous avions créée.  
 ![](ressources/TP1/image40.png)
 ![](ressources/TP1/image24.png)
-3. ### Test de l’outils ldp.exe :  {#test-de-l’outils-ldp.exe-:}
+### 3.  Test de l’outils ldp.exe
 
 ![](ressources/TP1/image26.png)
 
@@ -399,7 +371,7 @@ Nous gardons les valeurs par défaut (dans ce cas; image ci dessous)
 Nous somme donc authentifié comme DOM1\\Administrateur
 ![](ressources/TP1/image27.png)
 
-3. ###  Détail des deux étapes de la connexion à ldp.exe. {#détail-des-deux-étapes-de-la-connexion-à-ldp.exe.}
+3. ###  Détail des deux étapes de la connexion à ldp.exe.
 
    **La première étape** consiste à se connecter au serveur LDAP en créant une session de communication en utilisant son nom d'hôte (ou adresse IP) et le port. L'outil permet d'établir un lien réseau avec un serveur LDAP ou un contrôleur de domaine Active Directory.  
      
