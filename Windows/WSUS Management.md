@@ -1,4 +1,3 @@
-![Bienvenue - UPSSITECH][image1]
 # Objectifs : 
 * - Comment installer un service sur Windows. Même si des détails divergent, les services s'installent et se configurent de manière similaires.
 * - Comment élaborer une stratégie (Voir le contexte global, les forces et les faiblesses du mise en oeuvre)
