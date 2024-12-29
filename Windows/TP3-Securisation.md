@@ -6,7 +6,7 @@
 
 # TP 3 : Sécurisation 
 
-GAKOU Mohamed et Khaled Salah
+GAKOU Mohamed
 
 9/12/2024
 
