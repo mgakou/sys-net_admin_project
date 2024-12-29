@@ -33,9 +33,11 @@ Compte-Rendu
 2. # Conception du schéma {#conception-du-schéma}
 
 ![](ressources/TP2/image7.jpg)
+
 ***Figure 1: Schéma réseau illustrant le client, l’ AD et WSUS.***
 
 ![](ressources/TP2/image4.png)
+
 ***Figure 2: Le fonctionnement de WSUS serveur.***
 
 WSUS(Windows Server Update Services) est un service essentiel pour la gestion centralisée des mises à jour Microsoft au sein d’un réseau d’entreprise. Il facilite la synchronisation, l’approbation, la gestion et le suivi des mises à jour, ce qui permet de renforcer la sécurité, d’améliorer la stabilité des systèmes, tout en optimisant l’utilisation de la bande passante Internet.
@@ -51,7 +53,7 @@ WSUS(Windows Server Update Services) est un service essentiel pour la gestion ce
 
    *Figure 3: Tester la connectivité*
 
-![][image5]  
+![](ressources/TP2/image15.png)  
 ***Figure 4: Installation du serveur WSUS***   
    
 
