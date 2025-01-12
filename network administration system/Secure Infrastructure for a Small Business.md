@@ -34,29 +34,29 @@ But We have to configure this Kali machine to be inside the LAN network, and to 
 
 We open that file with the **sudu cat /etc/network/interfaces, as bellow
 
-![](/images/image2.png)
+![](images/image2.png)
 
 We edit this file by adding our IP address (on eth1 interface, the ip and the mask) as shown bellow
 
-![](/images/image3.png)
+![](images/image3.png)
 
 So our Kali Machine has 192.168.1.10/24 address 
 
-![](/images/image4.png)
+![](images/image4.png)
 
 Let's try a ping toward our OpnSense LAN interface 
 * 192.168.1.10 (Kali machine) -> 192.168.1.1 (OPNSense LAN interface)
 
-![](/images/image5.png)
+![](images/image5.png)
 
 ## OpnSense GUI interface
 
 Now we have set the IP for Kali, let's connect to the Opnsense GUI Portals by searching its IP addresss on firefox, then we enter the username and password set for Opnsense and the Login button, as shown bellow
 
-![](/images/image6.png)
+![](images/image6.png)
 
 Under the "Interfaces" tab we can see the 3 interfaces
-![](/images/image7.png)
+![](images/image7.png)
 
 
 ## Allowing Ping to the DMZ Interface on OPNsense
@@ -73,7 +73,7 @@ To enable **ping (ICMP)** to the DMZ interface, a dedicated rule must be added t
 ### **1. Verify Default Rules**
 Navigate to **Firewall > Rules > DMZ**:
    - As shown in the screenshot, no rules are defined for the DMZ interface by default, which blocks all incoming traffic.
-![](/images/image11.png)
+![](images/image11.png)
 ---
 
 ### **2. Add a Rule to Allow ICMP**
@@ -88,13 +88,13 @@ To allow ping to the DMZ interface:
    - **Source**: `DMZ net` (represents all devices in the DMZ network).
    - **Destination**: `DMZ net` (the IP address of the DMZ interface).
 3. Click **Save** to save the rule.
-![](/images/image12.png)
-![](/images/image13.png)
+![](images/image12.png)
+![](images/image13.png)
 ---
 
 ### **3. Apply Changes**
 After creating the rule, click **Apply Changes** at the top of the page to activate the new configurations.
-![](/images/image14.png)
+![](images/image14.png)
 ---
 
 ## **Expected Result**
