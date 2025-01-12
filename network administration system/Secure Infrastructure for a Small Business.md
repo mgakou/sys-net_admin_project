@@ -26,7 +26,7 @@ Here we have our OpnSense Machine that has 3 interfaces :
 * LAN Interface 192.168.1.1 : The LAN interface which is set statically is the local network for client computers. In VirtualBox, we choose the **Internal network mode**
 * DMZ 192.168.2.1 : Dematerilized zone hosting a ubuntu web server
 
-![](/images/image1.png)
+![](images/image1.png)
 
 After the OpenSense Machine we set now a Kali machine which is inside the 192.168.1.0/24 (LAN network). In Virtual box we select the **Internal Network**. We will use this kali machine for accessing the OpnSense Interface at the 192.168.1.1 ip address
 
