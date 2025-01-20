@@ -196,7 +196,7 @@ We can see now that the rule has beeen added
 ### **Firewall Rules - DMZ**
 ![](images/image20.png)
 ![](images/image21.png)
-We can see now that the rule has beeen added
+   We can see now that the rule has beeen added
 ![](images/image22.png)
 ---
 
@@ -276,8 +276,53 @@ Assign the server a static IP in the DMZ and ensure it communicates correctly wi
    ```bash
    sudo netplan apply
 
-4. After applying the network configuration, we can check the config by looking at the contains of the 50-cloud-init.yzml, the IP address that is set and the route that have beein added
+4. After applying the network configuration, we can check the config by looking at the content of the 50-cloud-init.yzml, the IP address that is set and the route that have added
 
    ![](images/image23.png)
 5. The we check our netxork configuration by doing a list of ping toward the DMZ, 8.8.8.8 and google.com
    ![](images/image24.png)
+
+
+# Setting Up Nginx on Ubuntu Server in the DMZ
+
+## **1. Objective**
+Deploy and configure an Nginx web server on the Ubuntu Server located in the DMZ to host and serve web content securely.
+
+---
+
+## **2. Prerequisites**
+
+1. **Ubuntu Server** installed and configured in the DMZ as outlined in the previous section.
+2. **Static IP address** assigned to the Ubuntu Server (e.g., `192.168.2.10`).
+3. Internet connectivity for downloading and installing packages (configured through OPNsense NAT and firewall rules).
+
+---
+
+## **3. Installing Nginx**
+
+### **Steps:**
+1. Update the system:
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+2. Install Nginx
+   ```bash
+   sudo apt install nginx -y   
+   ```
+   ![](images/image25.png)
+
+   Enable, start and verify the status of the Nginx service
+   ```bash
+   sudo systemctl enable nginx
+   sudo systemctl start nginx
+   ```
+   ![](images/image26.png)
+   
+3. Verify the Nginx installation 
+
+   We would firstly verify its installation by try to connect to the nginx via a **VM that is inside the DMZ network**. To do so, we open our kali machine, change the IP to put the kali machine inside the DMZ network with **a static IP : 192.168.2.20** (for example), Then, we open Firefox and search the ip of our Ubuntu Server (192.168.2.10)
+   We should see a landing page like the image shown bellow
+   ![](images/image27.png)
+
+   This prove that our Nginx is functional and well set up
+
+   #### For the purpose of the homelab we will not set up all the configuration for a web server. For a network and security oriented homelab, it is not necessary to configure a full web server. Installing Nginx and using its default configuration is enough to test firewall rules and simulate a service in DMZ 
