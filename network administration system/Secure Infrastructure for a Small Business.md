@@ -111,3 +111,173 @@ With this rule in place:
    - You can enable the **Log packets that are handled by this rule** option to monitor ICMP requests in the firewall logs.
 
 ---
+
+# Outbound NAT Configuration and Firewall Rules in OPNsense
+
+## **1. Hybrid Outbound NAT Mode**
+The **Hybrid Outbound NAT rule generation** mode was enabled to allow a combination of:
+- Automatically generated NAT rules for default traffic handling.
+- Manually created NAT rules for specific traffic use cases.
+
+This flexibility allows for precise control over traffic flow while maintaining default functionality.
+
+---
+
+## **2. Steps to Configure Outbound NAT**
+
+### **Objective:**
+Manually allow machines in the DMZ network to access the Internet using NAT.
+
+### **Steps:**
+1. Navigate to **Firewall > NAT > Outbound**.
+2. Select **Hybrid Outbound NAT rule generation** and click **Save**.
+3. Under the **Manual rules** section, click the **Add (+)** button to create a new rule.
+4. Configure the following fields:
+   - **Interface**: `WAN`  
+     This applies the NAT rule to the WAN interface, which connects to the Internet.
+   - **TCP/IP Version**: `IPv4`
+   - **Protocol**: `any`
+   - **Source Address**: `DMZ net`  
+     This specifies that the source traffic originates from the DMZ network.
+   - **Source Port**: Leave as `any`.
+   - **Destination Address**: `any`  
+     This allows DMZ traffic to reach any external destination.
+   - **Destination Port**: Leave as `any`.
+   - **Translation/Target**: `Interface address`  
+     This translates the source IP of DMZ traffic to the WAN interface IP for NAT.
+   - **Description**: Add a meaningful description like `Manually allow DMZ machines to access internet`.
+5. Click **Save** to apply the rule.
+6. Apply changes by clicking the **Apply Settings** button at the top of the page.
+
+### **Outcome:**
+This rule allows machines in the DMZ network to access the Internet by translating their source IPs to the WAN interface IP.
+
+---
+
+## **3. Second Firewall Rules for the DMZ**
+
+### **Objective:**
+Define specific rules to manage traffic for the DMZ network.
+
+### **Steps to Create a Firewall Rule:**
+1. Navigate to **Firewall > Rules > DMZ**.
+2. Click the **Add (+)** button to create a new rule.
+3. Configure the following fields:
+   - **Action**: `Pass`  
+     This allows the traffic to pass.
+   - **Interface**: `DMZ`  
+     The rule applies to the DMZ interface.
+   - **Direction**: `in`  
+     Controls incoming traffic to the DMZ.
+   - **TCP/IP Version**: `IPv4`
+   - **Protocol**: `any`
+   - **Source**: `DMZ net`  
+     Specifies that the traffic originates from the DMZ network.
+   - **Destination**: `any`  
+     Allows the traffic to reach any destination.
+   - **Description**: Add a description like `Manually allow DMZ machines to access internet`.
+4. Save the rule and apply the changes
+### **Outcome:**
+This rule permits DMZ machines to initiate connections to external networks while maintaining control over inbound traffic.
+
+---
+
+## **4. Screenshots**
+Below are the screenshots of the configurations applied:
+
+### **Outbound NAT - Manual Rule**
+![](images/image15.png)
+![](images/image16.png)
+![](images/image17.png)
+![](images/image18.png)
+We can see now that the rule has beeen added
+![](images/image19.png)
+
+### **Firewall Rules - DMZ**
+![](images/image20.png)
+![](images/image21.png)
+We can see now that the rule has beeen added
+![](images/image22.png)
+---
+
+## **5. Verification**
+1. **DMZ Machines**:
+   - Confirm that devices in the DMZ can access the Internet.
+   - Verify that traffic passes through the WAN interface using NAT.
+2. **Logs**:
+   - Check traffic logs in **Firewall > Log Files > Live View** to ensure that traffic matches the rules.
+3. **Testing**:
+   - Use a machine in the DMZ to ping external websites (e.g., `8.8.8.8`) or access the Internet via a web browser.
+   - Ensure the connection works as expected.
+
+---
+
+# Ubuntu Server in the DMZ with VirtualBox Internal Network
+
+## **1. Installing Ubuntu Server**
+
+### **Objective:**
+Deploy an Ubuntu Server in the DMZ network to host services securely and isolate it from internal LAN traffic.
+
+### **Steps:**
+1. Download the Ubuntu Server ISO from the official [Ubuntu website](https://ubuntu.com/download/server).
+2. Create a new virtual machine in **Oracle VirtualBox**:
+   - Select **Ubuntu (64-bit)** as the operating system type.
+   - Allocate sufficient CPU, RAM, and storage resources for your server.
+3. Attach the downloaded ISO as the boot disk and start the VM.
+4. Complete the Ubuntu Server installation:
+   - Choose the minimal server installation without GUI.
+   - Configure a static IP during installation (optional; can also be done later).
+
+---
+
+## **2. Configuring the Virtual Machine in VirtualBox**
+
+### **Objective:**
+Place the Ubuntu Server in the DMZ using VirtualBox's **Internal Network** to simulate a secure network environment.
+
+### **Steps:**
+1. Open the **Settings** of the Ubuntu Server VM in VirtualBox.
+2. Navigate to **Network** and configure the following:
+   - **Adapter 1**: Enable and select `Internal Network`.
+     - Name the network as `DMZ`.
+     - This will connect the VM to the same virtual network as the OPNsense DMZ interface.
+   - Ensure **Adapter 2** is disabled to prevent direct access to the LAN or WAN.
+3. Start the VM and verify its network configuration:
+   - Set a static IP that matches the DMZ network range (e.g., `192.168.2.10/24`).
+   - Ensure the gateway points to the OPNsense DMZ interface (e.g., `192.168.2.1`).
+
+---
+
+## **3. Configuring the Ubuntu Server in the DMZ**
+
+### **Objective:**
+Assign the server a static IP in the DMZ and ensure it communicates correctly within the DMZ network.
+
+### **Steps:**
+1. Open the network configuration file on Ubuntu Server:
+   ```bash
+   sudo nano /etc/netplan/50-cloud-init.yaml
+2. Edit the file to configure static ip and DNS 
+   ```
+   network:
+   version: 2
+   ethernets:
+    enp0s3:
+      addresses:
+        - 192.168.2.10/24
+      gateway4: 192.168.2.1
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+   ```
+3. The let's apply by doing so 
+   ```bash
+   sudo netplan apply
+
+4. After applying the network configuration, we can check the config by looking at the contains of the 50-cloud-init.yzml, the IP address that is set and the route that have beein added
+
+   ![](images/image23.png)
+5. The we check our netxork configuration by doing a list of ping toward the DMZ, 8.8.8.8 and google.com
+   ![](images/image24.png)
