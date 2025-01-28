@@ -326,3 +326,6 @@ Deploy and configure an Nginx web server on the Ubuntu Server located in the DMZ
    This prove that our Nginx is functional and well set up
 
    #### For the purpose of the homelab we will not set up all the configuration for a web server. For a network and security oriented homelab, it is not necessary to configure a full web server. Installing Nginx and using its default configuration is enough to test firewall rules and simulate a service in DMZ 
+
+
+# IN PROGRESS ...
