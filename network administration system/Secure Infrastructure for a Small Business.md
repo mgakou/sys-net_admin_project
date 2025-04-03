@@ -8,15 +8,13 @@ This is a complete lab project scenario to implement and experiment with network
 Create a secure and functional enterprise network infrastructure including:
 1. A firewall/router (OPNsense) to manage network traffic.
 2. Isolated network segments (LAN, DMZ, WAN).
-3. An IDS/IPS engine (Suricata) to detect and prevent threats.
+3. An IDS/IPS engine to detect and prevent threats.
 4. A secure web server in a DMZ.
-5. VPN access for a remote user.
 
 ### Network Topology:
 1. WAN: Internet connection (provided by the host network or a simulator).
 2. LAN: Local area network for employees 
 3. DMZ: Demilitarized zone hosting a public web server
-4. VPN: Secure access for remote users.
 
 
 # Configuration
