@@ -3,7 +3,7 @@
 
 ## 🚀 Deployment Steps
 I install and configure wazuh using the assisted installation method
-### 1. Installing Wazuh Server
+### 1. Installing Wazuh Indexer
 Download the Wazuh installation assistant and the configuration file.
 
 ```bash
