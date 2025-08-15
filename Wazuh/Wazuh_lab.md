@@ -11,7 +11,7 @@ curl -sO https://packages.wazuh.com/4.12/wazuh-install.sh
 curl -sO https://packages.wazuh.com/4.12/config.yml
 ```
 
-![](Image/image1.png)
+![](image/image1.png)
 
 After downloading, we have to open de /config file to replace the node names and IP values with the corresponding names and IP addresses
 
@@ -21,28 +21,28 @@ All components (Indexer, Server, Dashboard) are hosted on the same VM with IP `1
 * The Indexer is based on OpenSearch and is responsible for storing logs and indexing events
 * The Wazuh Server is the core component that collects data from agents analyzes logs and events and triggers alerts based on rules
 * The Dashboard is the web interface
-![](Image/image2.png)
+![](image/image2.png)
 
 Then we run the Wazuh installation assistant with the option --generate-config-files to generate the Wazuh cluster key certificates, and passwords necessary for installation
 ```bash 
 wazuh-install.sh --generate-config-files
 ```
 This step prepares the required configuration files and certificates before launching the actual installation.
-![](Image/image3.png)
+![](image/image3.png)
 
 ### 2. Wazuh indexer nodes installation
 Now we run it with the option --wazuh-indexer and the node name to install and configure the Wazuh indexer. Here I use the node-1.
 ```bash 
 wazuh-install.sh --wazuh-indexer node-1
 ```
-![](Image/image4.png)
+![](image/image4.png)
 
 ### 3. Initialiazation of the cluster
 Now we run it with the option --wazuh-indexer and the node name to install and configure the Wazuh indexer. Here I use the node-1.
 ```bash 
 wazuh-install.sh --start-cluster
 ```
-![](Image/image5.png)
+![](image/image5.png)
 ~~~ 
 We only need to initialize the cluster once.
 ~~~
@@ -51,7 +51,7 @@ After initialize the cluster we need to get our admin and password
 ```
 tar -axf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt -O | grep -P "\'admin\'" -A 1
 ```
-![](Image/image6.png)
+![](image/image6.png)
 ---
 ### 2. Installing Wazuh Agent (Example: Ubuntu)
 ```bash
