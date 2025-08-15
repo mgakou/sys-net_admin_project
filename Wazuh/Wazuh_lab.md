@@ -1,41 +1,5 @@
 # Wazuh SIEM Deployment & Security Monitoring Lab
 
-## 📌 Project Overview
-In this project, I deployed, configured, and tested **Wazuh** as a SIEM (Security Information and Event Management) platform to centralize log collection, detect threats in real time, and improve incident response efficiency.
-
-This lab simulates a small enterprise environment with multiple endpoints monitored through custom detection rules and dashboards for security event analysis.
-
----
-
-## 🎯 My Objectives
-- Deploy a **Wazuh server** and connect 2 agents.
-- Centralize log collection from Linux and/or Windows hosts.
-- Configure **custom detection rules** to meet specific security requirements.
-- Test and validate real-time detection of security incidents.
-- Reduce incident response time using automation and alerting.
-
----
-
-## 🛠 Tools & Technologies I Used
-- **Wazuh** (Manager, Indexer, Dashboard)
-- **Filebeat** (log forwarding)
-- **Elasticsearch** / **OpenSearch** (depending on Wazuh version)
-- **Kibana** / **Wazuh Dashboard**
-- **Linux (Ubuntu/Debian)** for server and agents
-- **VirtualBox** / **VMware** for lab virtualization
-- Networking tools: `curl`, `ping`, `nmap` (for testing alerts)
-
----
-
-## 🗂 My Lab Architecture
-```
-[ Attacker Machine ] ---> [ Monitored Endpoint ] ---> [ Wazuh Agent ] ---> [ Wazuh Server (Manager + Dashboard) ]
-```
-- **Wazuh Server**: Central log collector, rules engine, and dashboard.
-- **Wazuh Agent**: Installed on monitored endpoints to send logs/events.
-- **Network**: Isolated lab network for safe testing.
-
----
 
 ## 🚀 Deployment Steps
 I install and configure wazuh using the assisted installation method
