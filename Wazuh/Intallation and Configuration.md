@@ -1,7 +1,9 @@
 # Wazuh SIEM Deployment & Security Monitoring Lab
 
+The objective here is to install wazuh indexer, server and wazuh dashboard. Next, we connect 2 agents to monitor
 
-I install and configure wazuh using the assisted installation method
+Let's start
+
 ## 1. Installing Wazuh Indexer
 Download the Wazuh installation assistant and the configuration file.
 
