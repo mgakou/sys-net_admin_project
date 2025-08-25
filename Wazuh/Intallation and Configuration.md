@@ -1,9 +1,8 @@
 # Wazuh SIEM Deployment & Security Monitoring Lab
 
 
-## 🚀 Deployment Steps
 I install and configure wazuh using the assisted installation method
-### 1. Installing Wazuh Indexer
+## 1. Installing Wazuh Indexer
 Download the Wazuh installation assistant and the configuration file.
 
 ```bash
@@ -30,14 +29,14 @@ wazuh-install.sh --generate-config-files
 This step prepares the required configuration files and certificates before launching the actual installation.
 ![](image/image3.png)
 
-### 2. Wazuh indexer nodes installation
+### 1.2. Wazuh indexer nodes installation
 Now we run it with the option --wazuh-indexer and the node name to install and configure the Wazuh indexer. Here I use the node-1.
 ```bash 
 wazuh-install.sh --wazuh-indexer node-1
 ```
 ![](image/image4.png)
 
-### 3. Initialiazation of the cluster
+### 1.3. Initialiazation of the cluster
 Now we run it with the option --wazuh-indexer and the node name to install and configure the Wazuh indexer. Here I use the node-1.
 ```bash 
 wazuh-install.sh --start-cluster
@@ -53,66 +52,33 @@ tar -axf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt -O | gr
 ```
 ![](image/image6.png)
 ---
-### 2. Installing Wazuh Agent (Example: Ubuntu)
+## 2. Installing Wazuh Server
+To install the Wazuh server, run the Wazuh installation assistant with the `--wazuh-server` flag, followed by the name of the server node defined in your `config.yml`
+This command will deploy the Wazuh manager services apply the relevant certificates and start the server components of your Wazuh cluster.
 ```bash
-curl -sO https://packages.wazuh.com/4.8/wazuh-agent.deb
-sudo WAZUH_MANAGER="192.168.1.10" dpkg -i wazuh-agent.deb
-sudo systemctl enable wazuh-agent
-sudo systemctl start wazuh-agent
+bash wazuh-install.sh --wazuh-server wazuh-1
 ```
+![](image/image7.png)
+Our server is now successfully installed
+## 3. Wazuh dashboard installation
 
-### 3. Creating Custom Rules
-I edited `/var/ossec/etc/rules/local_rules.xml` to add rules for:
-- SSH brute-force attempts
-- Port scanning detection
-- Unauthorized file modifications
-
-Example rule:
-```xml
-<rule id="100100" level="10">
-  <decoded_as>ssh</decoded_as>
-  <description>SSH brute-force attempt detected</description>
-  <group>authentication_failed,</group>
-</rule>
-```
-
-Restarting the manager:
+We use the same command with the different option. This time we use the --wazuh-dashboard dashboard options to install our dashboard
 ```bash
-sudo systemctl restart wazuh-manager
+bash wazuh-install.sh --wazuh-dashboard dashboard
 ```
+![](image/image8.png)
+Once Wazuh is installed, a confirmation message appears with access details:
 
-### 4. Testing Detection
-- Ran an **Nmap scan** from attacker machine to monitored host.
-- Attempted multiple failed SSH logins.
-- Modified a monitored file.
+- **URL**: `https://<your_server_ip>` (default port: 443, you can also change the default port)
+- **Username**: `admin`
+- **Password**: generated automatically
 
-I then verified that alerts appeared in the **Wazuh Dashboard** in real time.
+The admin password is stored inside a file:
 
----
+- `wazuh-install-files/wazuh-passwords.txt`  
+- This file is inside the archive: `wazuh-install-files.tar`
 
-## 📊 Results
-- Successfully centralized logs from multiple hosts.
-- Real-time alerts for suspicious activities such as SSH brute-force attempts, scans, and file changes.
-- Reduced investigation time by correlating alerts in the dashboard.
+To extract and display it, run:
 
----
-
-## 🔍 Lessons Learned
-- Fine-tuning detection rules is essential to reduce false positives.
-- Deploying multiple agents increases network visibility.
-- Wazuh’s flexibility as an open-source SIEM allows for deep customization.
-
----
-
-## 📷 Screenshots
-*(I plan to add screenshots here)*
-1. Wazuh Dashboard overview
-2. Example alert details
-3. Custom rule triggering
-
----
-
-## 📚 References
-- [Wazuh Official Documentation](https://documentation.wazuh.com/)
-- [Wazuh GitHub Repository](https://github.com/wazuh/wazuh)
-- [Wazuh Ruleset Guide](https://documentation.wazuh.com/current/user-manual/ruleset/index.html)
+```bash
+tar -O -xvf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt
