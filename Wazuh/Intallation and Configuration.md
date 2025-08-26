@@ -1,9 +1,7 @@
 # Wazuh SIEM Deployment & Security Monitoring Lab
 
-The objective here is to install wazuh indexer, server and wazuh dashboard. Next, we connect 2 agents to monitor
 
-Let's start
-
+I install and configure wazuh using the assisted installation method
 ## 1. Installing Wazuh Indexer
 Download the Wazuh installation assistant and the configuration file.
 
@@ -84,3 +82,45 @@ To extract and display it, run:
 
 ```bash
 tar -O -xvf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt
+```
+
+## 4. Adding 2 agents
+
+Here we use 2 VMs that will be agents for our wazuh server.
+### 4.1 Add repository
+First over all, we must add the Wazuh repository to download the official packages
+1. Installation of the GPG key:
+``` bash
+sudo bash -c "curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import"
+sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+```
+2. Now add the repository
+``` bash
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
+```
+See screenshot below : 
+![](image/image9.png)
+### 4.2 Let's now deploy the wazuh agent
+On the endpoint machine (where you want to install the agent), replace 192.168.64.25 with the real IP of your Wazuh manager, and run : 
+```bash
+WAZUH_MANAGER="192.168.1.50" apt-get install wazuh-agent
+```
+It tells the agent where to send data, then installs the Wazuh agent.
+See screenshot below : 
+![](image/image10.png)
+
+And we restart the service... 
+```bash
+systemctl daemon-reload
+systemctl enable wazuh-agent
+systemctl start wazuh-agent
+```
+See screenshot below : 
+![](image/image11.png)
+
+
+~~~
+We do the same process for the 2nd agent.
+~~~
+
+# Finally the deployment process is now complete, and the Wazuh agent is successfully running on our linux system.
