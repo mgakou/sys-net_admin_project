@@ -21,6 +21,21 @@ Setting up and configuring an LDAP server for centralized user authentication.
 	•	Setting up and managing NFS.md:
 Configuring NFS services for secure file sharing between network nodes.
 
+### 3. Folder: Wazuh
+
+This folder contains practical labs focused on host-based security monitoring using the **Wazuh SIEM platform**.
+
+- `installation-and-config.md`: Explain the installation and configuration process of Wazuh server, indexer, dashboard and 2 ubuntu agents
+- `agent-vuln-analysis.md`: Detection and analysis of critical vulnerabilities on Wazuh agents (`c1`, `c2`). Manual verification of exploitability, documentation of false positives and remediation guidance.  
+  *Covers: CVE analysis, pam_krb5 audit, Kerberos service evaluation, OS package exposure.*
+
+Future work may include:
+- Software Composition Analysis (SCA)
+- Compliance policy auditing
+- Integration with VirusTotal / MITRE ATT&CK
+
+---
+
 ## Objectives of the Repository
 	•	Documenting my practical skills in cybersecurity and network administration.
 	•	Providing concrete examples for setting up network services and security solutions.
