@@ -15,7 +15,8 @@ We successfully connected two agents to our Wazuh server:
 
 All inventory and vulnerability data is being correctly reported to the server. We are ready to analyze detected issues.
 
-![Wazuh Dashboard with Critical CVEs](image/image13.png) image 13
+![Wazuh Dashboard with Critical CVEs](image/image13.png) 
+
 ---
 
 ## Dashboard Overview
