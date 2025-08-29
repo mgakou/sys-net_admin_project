@@ -15,13 +15,14 @@ We successfully connected two agents to our Wazuh server:
 
 All inventory and vulnerability data is being correctly reported to the server. We are ready to analyze detected issues.
 
+![Wazuh Dashboard with Critical CVEs](image/image13.png) image 13
 ---
 
 ## Dashboard Overview
 
 By accessing the **Vulnerability Detection > c1 > Dashboard** tab, we can see the Wazuh server has detected **19 vulnerabilities** marked as **Critical** for the agent `c1`.
 
-![Wazuh Dashboard with Critical CVEs](image/image13.png) image 13
+![Inventory tab showing critical pam_krb5 CVEs](image/image14.png) image 14
 
 ---
 
@@ -37,7 +38,6 @@ When switching to the **Inventory tab**, we see detailed information about each 
   - CVE-2024-56431 — related to `libtheora0`
   - CVE-2021-3773 — related to `netfilter`
 
-![Inventory tab showing critical pam_krb5 CVEs](image/image14.png) image 14
 ![Inventory tab showing critical pam_krb5 CVEs](image/image15.png) image 15
 
 ---
