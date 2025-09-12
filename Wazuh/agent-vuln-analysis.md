@@ -15,8 +15,8 @@ We successfully connected two agents to our Wazuh server:
 
 All inventory and vulnerability data is being correctly reported to the server. We are ready to analyze detected issues.
 
-![Wazuh Dashboard with Critical CVEs](image/image13.png) 
-
+![Wazuh Dashboard with Critical CVEs](image/image13.png)
+image 13
 ---
 
 ## Dashboard Overview
@@ -54,6 +54,7 @@ We performed a manual inspection on agent `c2` to verify if Kerberos was configu
 ```bash
 ls -l /etc/k*
 ```
+
 ![Comman result](image/image16.png) image 16
 
 ## CVE-2023-3326 — pam_krb5 vulnerability
@@ -66,7 +67,8 @@ ls -l /etc/k*
   - `/etc/krb5.conf` is missing
   - `pam_krb5` is not used in any active PAM service
 - **Remediation**: None required at this time
-- **Reference**: https://nvd.nist.gov/vuln/detail/CVE-2023-3326
+- **Reference**: <https://nvd.nist.gov/vuln/detail/CVE-2023-3326>
+
 ## General Observation on Critical Vulnerabilities
 
 Upon reviewing all critical CVEs flagged by Wazuh on agent `c2`, we observed that:
@@ -80,9 +82,122 @@ Upon reviewing all critical CVEs flagged by Wazuh on agent `c2`, we observed tha
 This means that **most of the reported critical vulnerabilities are not currently exploitable** in the system’s default state.
 
 We retain this conclusion unless:
+
 - A Kerberos configuration is manually introduced,
 - Or PAM services are modified to actively use `pam_krb5`.
+
 ---
 
+# SCA - CIS Benchmark
 
-# In progress
+Let's now have a look at the SCA module. The Security Configuration Assessment is a module in Wazuh that compare the security configuration of the endpoints to the security standards. Here the security standards use is the CIS for Center for Internet Security that is a non lucratif organization that developp security standards (CIS Benchmark)
+![Comman result](image/image17.png)
+
+We will resolve some of the failed scan with focus on **c1 agent**. Keep in mind that we can have **false positive**
+
+## Issue 1: AppArmor Installation Issue (Wazuh Control 35536)
+
+Wazuh reported that AppArmor was not properly installed, failing compliance check **ID 35536**.
+
+### Problem
+
+Wazuh required both:
+
+- `apparmor` (already installed)
+- `apparmor-utils` (missing)
+
+📷 Screenshot of alert:  
+![Wazuh Alert](image/image18.png)
+
+---
+
+### Solution Steps
+
+1. **Checked installed packages**  
+
+   ```bash
+   dpkg -l | grep apparmor
+   ```
+
+   ![Wazuh Alert](image/image19.png)
+
+2. **Installed apparmor-utils**
+
+    ```bash
+    sudo apt install apparmor-utils
+    ```
+
+    ![Wazuh Alert](image/image20.png)
+3. **Verified instimagellation**
+
+    ```bash
+    dpkg-query -s apparmor-utils
+    ```
+
+    ![Wazuh Alert](image/image21.png)
+
+4. **Confirmation**
+  ![Wazuh Alert](image/image22.png)
+
+## Issue 2: GRUB Boot Timeout Not Working
+
+### Problem
+
+The system was booting too quickly, and GRUB was not showing up. Upon inspection, the `GRUB_TIMEOUT` and related parameters were either misconfigured or hidden by default.
+
+### Solution Steps
+
+1. **Edited GRUB Configuration**
+   Opened the GRUB file:
+
+   ```bash
+   sudo nano /etc/default/grub
+   ```
+
+   **Changes made:**
+   - Added:
+     ```bash
+     GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor"
+     ```
+
+   ![GRUB Config Edit](image/image23.png)
+
+2. **Updated GRUB**
+   Applied the changes using:
+
+   ```bash
+   sudo update-grub
+   ```
+
+   Output confirmed GRUB was successfully regenerated:
+
+   ![GRUB Updated](image/image24.png)
+
+---
+
+You can now reboot and test the GRUB menu during boot:
+
+```bash
+sudo reboot
+```
+
+## Issue 3: AppArmor Profiles Not Enforced
+
+We enforced all available AppArmor profiles using the `aa-enforce` command:
+
+```bash
+sudo aa-enforce /etc/apparmor.d/*
+```
+
+![AppArmor Enforce Output](image/image25.png)
+
+We then confirmed that all profiles were active and in **enforce mode** using:
+
+```bash
+sudo aa-status
+```
+
+![AppArmor Status](image/image26.png)
+
+**Summary**:  
+AppArmor is now fully active with all 156 profiles enforced on agent `c1`.
