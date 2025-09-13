@@ -16,14 +16,13 @@ We successfully connected two agents to our Wazuh server:
 All inventory and vulnerability data is being correctly reported to the server. We are ready to analyze detected issues.
 
 ![Wazuh Dashboard with Critical CVEs](image/image13.png)
-image 13
 ---
 
 ## Dashboard Overview
 
 By accessing the **Vulnerability Detection > c1 > Dashboard** tab, we can see the Wazuh server has detected **19 vulnerabilities** marked as **Critical** for the agent `c1`.
 
-![Inventory tab showing critical pam_krb5 CVEs](image/image14.png) image 14
+![Inventory tab showing critical pam_krb5 CVEs](image/image14.png)
 
 ---
 
@@ -39,7 +38,7 @@ When switching to the **Inventory tab**, we see detailed information about each 
   - CVE-2024-56431 — related to `libtheora0`
   - CVE-2021-3773 — related to `netfilter`
 
-![Inventory tab showing critical pam_krb5 CVEs](image/image15.png) image 15
+![Inventory tab showing critical pam_krb5 CVEs](image/image15.png)
 
 ---
 
@@ -156,10 +155,11 @@ The system was booting too quickly, and GRUB was not showing up. Upon inspection
 
    **Changes made:**
    - Added:
+
      ```bash
      GRUB_CMDLINE_LINUX="apparmor=1 security=apparmor"
      ```
-
+    🖼️ Screenshots:
    ![GRUB Config Edit](image/image23.png)
 
 2. **Updated GRUB**
@@ -171,6 +171,7 @@ The system was booting too quickly, and GRUB was not showing up. Upon inspection
 
    Output confirmed GRUB was successfully regenerated:
 
+   🖼️ Screenshots:
    ![GRUB Updated](image/image24.png)
 
 ---
@@ -188,6 +189,7 @@ We enforced all available AppArmor profiles using the `aa-enforce` command:
 ```bash
 sudo aa-enforce /etc/apparmor.d/*
 ```
+🖼️ Screenshots:
 
 ![AppArmor Enforce Output](image/image25.png)
 
@@ -196,8 +198,111 @@ We then confirmed that all profiles were active and in **enforce mode** using:
 ```bash
 sudo aa-status
 ```
+🖼️ Screenshots:
 
 ![AppArmor Status](image/image26.png)
 
-**Summary**:  
-AppArmor is now fully active with all 156 profiles enforced on agent `c1`.
+## Issue 4: Logging Martian Packets
+
+### Problem
+
+Martian packets are invalid IP packets with impossible source addresses (e.g., spoofed IPs or reserved ranges like `127.0.0.1`, `0.0.0.0`, etc.). They often indicate:
+
+- Network misconfiguration
+- Spoofing or scanning attempts
+- Packets received from the wrong interface
+
+Linux detects them and logs them **if** logging is enabled.
+
+### Solution
+
+  To enable logging of martian packets:
+
+  Edit `sysctl.conf` and add:
+
+  ```bash
+  net.ipv4.conf.all.log_martians = 1
+  net.ipv4.conf.default.log_martians = 1
+  ```
+
+  Then apply:
+
+  ```bash
+  sudo sysctl -p
+  ```
+
+🖼️ Screenshots:
+
+  ![Martian Logging Enabled](./image/image29.png)
+
+---
+
+## Issue 5: Disable Source Routing
+
+### Problem
+
+Source routing allows a packet sender to specify the route a packet should take. This is a **security risk** because:
+
+- It allows **bypassing firewall rules**
+- It can be exploited in **spoofing or MITM attacks**
+
+### Solution
+
+Disable it for IPv4 and IPv6 with:
+
+```bash
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+net.ipv6.conf.default.accept_source_route = 0
+net.ipv6.route.flush = 1
+```
+
+We save this in `/etc/sysctl.conf then run:
+
+```bash
+sudo sysctl -p
+```
+
+🖼️ Screenshot:
+
+![Disable Source Routing](./image/image27.png)
+![Disable Source Routing](./image/image28.png)
+
+---
+
+## Issue 5: Account Lockout with faillock
+
+### Problem
+
+Brute-force attacks are effective when the system has no login failure protection. By default, Linux allows unlimited password attempts.
+
+### Solution
+
+Use `faillock` to:
+
+- Lock accounts after N failed logins
+- Unlock them automatically after some time
+- Protect even the `root` account
+
+Edit the config file:
+
+```ini
+# /etc/security/faillock.conf
+
+deny = 3
+unlock_time = 600
+even_deny_root
+root_unlock_time = 900
+```
+
+🖼️ Screenshots:
+
+- `deny = 3`:  
+  ![deny](./image/image30.png)
+
+- `unlock_time = 600`, `even_deny_root` and `root_unlock_time = 900`:  
+  ![unlock_time](./image/image31.png)
+
+---
+
