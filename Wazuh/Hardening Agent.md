@@ -92,7 +92,7 @@ We retain this conclusion unless:
 Let's now have a look at the SCA module. The Security Configuration Assessment is a module in Wazuh that compare the security configuration of the endpoints to the security standards. Here the security standards use is the CIS for Center for Internet Security that is a non lucratif organization that developp security standards (CIS Benchmark)
 ![Comman result](image/image17.png)
 
-As part of my journey to improve system security and harden Linux servers, I ran a Security Configuration Assessment (SCA) using Wazuh on a fresh Ubuntu 24.04 system.
+## As part of my journey to improve system security and harden Linux servers, I ran a Security Configuration Assessment (SCA) using Wazuh on a fresh Ubuntu 24.04 system.
 
 	Initial Scan Results
 		- Checks executed: 279
