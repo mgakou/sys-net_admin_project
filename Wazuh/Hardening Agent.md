@@ -95,13 +95,11 @@ Let's now have a look at the SCA module. The Security Configuration Assessment i
 As part of my journey to improve system security and harden Linux servers, I ran a Security Configuration Assessment (SCA) using Wazuh on a fresh Ubuntu 24.04 system.
 
 Initial Scan Results
-	•	Benchmark: CIS Ubuntu Linux 24.04 LTS Benchmark v1.0.0
-	•	Scan date: September 11, 2025 – 20:48 UTC
-	•	Checks executed: 279
-	•	✅ Passed: 84
-	•	❌ Failed: 142
-	•	🟡 Not Applicable: 53
-	•	🔒 Final score: 37%
+	- Checks executed: 279
+	- ✅ Passed: 84
+	- ❌ Failed: 142
+	- Not Applicable: 53
+	- Final score: 37%
 ## Issue 1: AppArmor Installation Issue (Wazuh Control 35536)
 
 Wazuh reported that AppArmor was not properly installed, failing compliance check **ID 35536**.
