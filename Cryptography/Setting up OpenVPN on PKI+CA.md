@@ -33,7 +33,7 @@ Finally, a server certificate is created:
 All certificates and keys are generated in subdirectories. Standard practice is to copy them into /etc/openvpn/:  
 ![root@vnl:/etc/openvpn/easy-rsa# cp pki/dh.pen pkt/ca.crt pkt/tssued/server.crt pkt/priv](Attachments/AE39B3EF-960B-4BF1-BA41-397BE3B0739E.png)  
   
-**++Client Certificate Creation++**  
+**Client Certificate Creation**  
 Certificate generation and signing:  
   
 ![re a car te bete e te enter Lafernetlen thet wift be Incorporated](Attachments/23310A57-161B-49FB-93AA-069F1FBD7EDB.png)  
