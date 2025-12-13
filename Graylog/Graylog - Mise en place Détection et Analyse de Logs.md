@@ -10,6 +10,7 @@ Atelier Cybersécurité - Détection de Menaces
 Objectif : Comprendre comment ces outils se complètent pour une détection efficace.
 
 ## 🎯 Objectifs
+
 * Installer Graylog, ClamWin, Sysmon et NXLog
 * Centraliser les logs dans Graylog
 * Créer des alertes de détection
@@ -17,6 +18,7 @@ Objectif : Comprendre comment ces outils se complètent pour une détection effi
 * Comparer antivirus vs détection comportementale
 
 ## 🐧 Partie 1 : Installation de Graylog (Machine Linux)
+
 ### 1.1 Installation de Docker
 
 ```
@@ -33,6 +35,7 @@ sudo usermod -aG docker $USER
 ```
 
 Vérification :
+
 ```
 
 docker --version
@@ -40,19 +43,23 @@ docker compose version
 ```
 
 ### 1.2 Configuration système pour DataNode
+
 Avant de lancer Graylog, il est nécessaire d'augmenter la limite de map count pour Elasticsearch/DataNode :
+
 ```
 echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf 
 sudo sysctl -p
 ```
 
 ### 1.3 Création du fichier docker-compose.yml
+
 ```
 
 nano docker-compose.yml
 ```
 
-Contenu du fichier docker-compose.yml 
+Contenu du fichier docker-compose.yml
+
 ```
 version: "3.8"
 
@@ -151,9 +158,11 @@ volumes:
 ```
 
 ### 1.4 Création du fichier .env
+
 Créez un fichier .env dans le répertoire open-core :
-```nano .env ```
+```nano .env```
 Contenu du fichier .env :
+
 ```
 # --------------------------------------------------
 # Secret pour le chiffrement des mots de passe Graylog
@@ -176,17 +185,21 @@ GRAYLOG_IMAGE=graylog/graylog:7.0
 ```
 
 ### 1.5 Démarrage de Graylog
+
 ```
 # Lancer la stack en arrière-plan
 docker compose up -d
 # Vérifier les logs
 docker compose logs -f graylog
 ```
+
 ![](images/image1.png)
+
 ### 1.6 Première connexion
+
 1. Ouvrez votre navigateur et accédez à : http://<IPSERVEUR_LINUX>:9000
 
-2. Lors de la **première connexion**, suivez l'assistant de configuration (Data Node setup). 
+2. Lors de la **première connexion**, suivez l'assistant de configuration (Data Node setup).
 Le username est **admin** et le mot de passe est disponible dans les logs du docker.
 3. Connectez-vous avec :
 Utilisateur : admin
@@ -198,8 +211,11 @@ Configurez le DataNode
 
 Après, nous retouvons la page d'accueil de Graylog
 ![](images/image3.png)
+
 ### 1.7 Création de l'Input GELF TCP
+
 Nous créons l'input maintenant pour être prêt à recevoir les logs.
+
 1. Dans Graylog, allez dans System > Inputs
 2. Dans la liste déroulante "Select input", choisissez GELF TCP
 3. Cliquez sur Launch new input
@@ -218,14 +234,12 @@ Laissez les autres paramètres par défaut
 ![](images/image6.png)
 ![](images/image7.png)
 
-
 ---
 
 ✅ L'input devrait afficher "RUNNING" en vert
 📝 Note sur TCP vs UDP : Dans ce TP, nous utilisons TCP pour garantir la fiabilité de la transmission des logs (pas
 de perte de paquets). En environnement de production, UDP est souvent préféré pour ses meilleures performances,
 mais peut entraîner des pertes de logs en cas de congestion réseau
-
 
 # 🪟 Partie 2 : Installation de ClamWin (Machine Windows)
 
@@ -236,6 +250,7 @@ mais peut entraîner des pertes de logs en cas de congestion réseau
 3. Lors de la première utilisation, mettez à jour les définitions de virus (indispensable !)
 
 ## 2.2 Test de détection avec EICAR
+
 Le fichier EICAR est un fichier de test standard pour antivirus, totalement inoffensif mais détecté comme malware.
 **Téléchargement du fichier EICAR :**
 
@@ -246,6 +261,7 @@ Désactiver Windows Defender puis depuis PowerShell (en tant qu'administrateur) 
 ![](images/image10.png)
 
 **Lancement du scan :**
+
 1. Ouvrez ClamWin
 2. Sélectionnez le dossier C:\Users\Public\
 3. Cliquez sur Scan
@@ -253,16 +269,18 @@ Désactiver Windows Defender puis depuis PowerShell (en tant qu'administrateur) 
 ![](images/image10.png)
 ![](images/image11.png)
 
-
 ✅ Vérification :
 Vérifiez les logs de ClamWin dans le fichier configuré (généralement :
 C:\ProgramData\.clamwin\log\ClamScanLog.txt )
 
 ![](images/image12.png)
 ![](images/image13.png)
+
 # 📨 Partie 3 : Envoi des Logs ClamWin vers Graylog
+
 ## 3.1 Installation de NXLog
-1. Téléchargez NXLog Community Edition depuis : https://nxlog.co/downloads/nxlog-ce#nxlog-community- edition
+
+1. Téléchargez NXLog Community Edition depuis : <https://nxlog.co/downloads/nxlog-ce#nxlog-community-> edition
 2. Choisissez la version Windows (MSI)
 3. Installez avec les paramètres par défaut
 
@@ -329,24 +347,28 @@ Ce que ce fichier fait exactement
     Path clamwin => graylog_tcp
 </Route>
 ```
+
 **⚠ IMPORTANT :**
 Tu dois remplacer par l’adresse de ton Graylog
 Redemarrage des services
 ![](images/image15.png)
 
-
 ## 3.4 Vérification de l'envoi des logs ClamWin
+
 1. Relancez un scan ClamWin sur le fichier EICAR
 2. Allez dans Graylog > Search
 3. Recherchez : SourceModuleName:"inclamwin"
 
-
 ## Partie 4 : Installation et Configuration de Sysmon
+
 Sysmon (System Monitor) est un outil de Microsoft qui enregistre des événements système détaillés.
+
 ## 4.1 Installation de Sysinternals Suite Via winget (recommandé) :```winget install Microsoft.Sysinternals.Suite```
 
 ## 4.2 Création du fichier de configuration Sysmon
+
 Créez un fichier sysmon-config.xml :
+
 ```
 # Créer le fichier de configuration
 New-Item -ItemType Directory -Force -Path C:\Tools
@@ -449,13 +471,13 @@ Avec ce contenu
 La configuration inclut tous les EventID principaux : 1, 3, 5, 6, 7, 8, 9, 10, 11, 12-14, 17-18, 19-21, 22, 24, 25
 **Note :** Cette configuration est volontairement très permissive (irréaliste en production). L'objectif est pédagogique : comprendre la méthodologie, pas optimiser Sysmon.
 
-
 1. Télécharge Sysmon (officiel Microsoft)
 <https://download.sysinternals.com/files/Sysmon.zip>
 2. Extraire correctement Sysmon. Après extraction, tu dois avoir :
 Sysmon.exe
 Sysmon64.exe
 Eula.txt
+
 ````
 Copy-Item "C:\Users\<Your-NAME>\Downloads\Sysmon.exe" C:\Tools
 Copy-Item "C:\Users\<Your-NAME>\Downloads\Sysmon64.exe" C:\Tools
