@@ -182,7 +182,7 @@ docker compose up -d
 # Vérifier les logs
 docker compose logs -f graylog
 ```
-![](/image1.png)
+![](images/image1.png)
 ### 1.6 Première connexion
 1. Ouvrez votre navigateur et accédez à : http://<IPSERVEUR_LINUX>:9000
 
@@ -194,10 +194,10 @@ Mot de passe : MasterSSIR
 🔍 Vérification :
 L'interface Graylog doit s'afficher correctement
 Configurez le DataNode
-![](/image2.png)
+![](images/image2.png)
 
 Après, nous retouvons la page d'accueil de Graylog
-![](/image3.png)
+![](images/image3.png)
 ### 1.7 Création de l'Input GELF TCP
 Nous créons l'input maintenant pour être prêt à recevoir les logs.
 1. Dans Graylog, allez dans System > Inputs
@@ -213,10 +213,10 @@ Laissez les autres paramètres par défaut
 
 5. Cliquez sur Save
 6. Sélectionnez Set-up Input (en jaune) > Select Stream > Next > Start Input
-![](/image4.png)
-![](/image5.png)
-![](/image6.png)
-![](/image7.png)
+![](images/image4.png)
+![](images/image5.png)
+![](images/image6.png)
+![](images/image7.png)
 
 
 ---
@@ -241,25 +241,25 @@ Le fichier EICAR est un fichier de test standard pour antivirus, totalement inof
 
 Désactiver Windows Defender puis depuis PowerShell (en tant qu'administrateur) :
 
-![](/image8.png)
-![](/image9.png)
-![](/image10.png)
+![](images/image8.png)
+![](images/image9.png)
+![](images/image10.png)
 
 **Lancement du scan :**
 1. Ouvrez ClamWin
 2. Sélectionnez le dossier C:\Users\Public\
 3. Cliquez sur Scan
 4. ClamWin devrait détecter le fichier EICAR comme Eicar-Signature
-![](/image10.png)
-![](/image11.png)
+![](images/image10.png)
+![](images/image11.png)
 
 
 ✅ Vérification :
 Vérifiez les logs de ClamWin dans le fichier configuré (généralement :
 C:\ProgramData\.clamwin\log\ClamScanLog.txt )
 
-![](/image12.png)
-![](/image13.png)
+![](images/image12.png)
+![](images/image13.png)
 # 📨 Partie 3 : Envoi des Logs ClamWin vers Graylog
 ## 3.1 Installation de NXLog
 1. Téléchargez NXLog Community Edition depuis : https://nxlog.co/downloads/nxlog-ce#nxlog-community- edition
@@ -332,7 +332,7 @@ Ce que ce fichier fait exactement
 **⚠ IMPORTANT :**
 Tu dois remplacer par l’adresse de ton Graylog
 Redemarrage des services
-![](/image15.png)
+![](images/image15.png)
 
 
 ## 3.4 Vérification de l'envoi des logs ClamWin
