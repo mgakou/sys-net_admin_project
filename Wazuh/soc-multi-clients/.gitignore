@@ -1,0 +1,9 @@
+# Secrets et sauvegardes locales — ne jamais publier
+*.orig
+*.orig-*
+*.pem
+*.key
+.env
+secrets/
+*.pass
+__pycache__/

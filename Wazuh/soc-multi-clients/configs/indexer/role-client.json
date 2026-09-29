@@ -1,0 +1,9 @@
+{
+  "cluster_permissions": ["cluster_composite_ops_ro"],
+  "index_permissions": [
+    {
+      "index_patterns": ["wazuh-alerts-4.x-__CODE__-*"],
+      "allowed_actions": ["read"]
+    }
+  ]
+}

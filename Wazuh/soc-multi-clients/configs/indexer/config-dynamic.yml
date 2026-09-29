@@ -1,0 +1,7 @@
+# Extrait de /etc/wazuh-indexer/opensearch-security/config.yml
+# Ajouter la ligne sous config > dynamic (espaces uniquement, pas de tabulation),
+# puis appliquer avec securityadmin.sh -t config (voir docs/04-rbac-indexer.md).
+config:
+  dynamic:
+    do_not_fail_on_forbidden: true
+    # http: ... (le reste de la configuration existante est inchangé)

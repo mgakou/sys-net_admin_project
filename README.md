@@ -2,6 +2,17 @@
 
 Welcome to my GitHub repository documenting my practical work (labs) and projects in cybersecurity and network administration. This repository serves as a comprehensive resource for showcasing my hands-on experiments and configurations carried out as part of my studies and personal projects.
 
+## ⭐ Featured project — Multi-client SOC on Wazuh
+
+**[Wazuh/soc-multi-clients](Wazuh/soc-multi-clients/)** — How to monitor several clients on a single Wazuh platform while guaranteeing that each client only sees its own data (MSSP use case), without deploying one stack per client.
+
+- Per-client indices created automatically by a modified ingest pipeline
+- Least-privilege RBAC validated by isolation tests (own data readable, other clients → HTTP 403)
+- Segmented lab with pfSense and WireGuard analyst access
+- Scripts: client onboarding, pipeline patch, routing audit, isolation tests
+
+*Documentation in French.*
+
 ## Repository Structure
 
 ### 1. Folder: Windows
@@ -25,7 +36,9 @@ Configuring NFS services for secure file sharing between network nodes.
 
 This folder contains practical labs focused on host-based security monitoring using the **Wazuh SIEM platform**.
 
+- **`soc-multi-clients/`**: Multi-client SOC — data isolation per client (per-client indices, RBAC, isolation tests, onboarding script). See the [project README](Wazuh/soc-multi-clients/README.md).
 - `installation-and-config.md`: Explain the installation and configuration process of Wazuh server, indexer, dashboard and 2 ubuntu agents
+- `Hardening Agent.md`: Hardening of the Wazuh agents
 - `agent-vuln-analysis.md`: Detection and analysis of critical vulnerabilities on Wazuh agents (`c1`, `c2`). Manual verification of exploitability, documentation of false positives and remediation guidance.  
   *Covers: CVE analysis, pam_krb5 audit, Kerberos service evaluation, OS package exposure.*
 

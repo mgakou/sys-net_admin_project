@@ -1,0 +1,11 @@
+<!--
+  Bloc à placer DANS la section <client> du ossec.conf de l'agent, sous <server>.
+  Linux   : /var/ossec/etc/ossec.conf
+  Windows : C:\Program Files (x86)\ossec-agent\ossec.conf (encodage UTF-8 ou ANSI)
+  Remplacer client-cla par le groupe du client.
+-->
+<enrollment>
+  <enabled>yes</enabled>
+  <groups>client-cla</groups>
+  <!-- <agent_name>CLA-NOM-HOTE</agent_name>  (recommandé en production) -->
+</enrollment>

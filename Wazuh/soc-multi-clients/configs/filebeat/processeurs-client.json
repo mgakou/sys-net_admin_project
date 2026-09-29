@@ -1,0 +1,22 @@
+{
+  "_commentaire": "Processeurs à insérer juste après le processeur json du pipeline /usr/share/filebeat/module/wazuh/alerts/ingest/pipeline.json, puis préfixe à utiliser dans date_index_name. Appliqué automatiquement par scripts/patch_pipeline.py.",
+  "processeurs_a_inserer": [
+    {
+      "set": {
+        "field": "agent.labels.client",
+        "value": "unassigned",
+        "override": false
+      }
+    },
+    {
+      "lowercase": {
+        "field": "agent.labels.client",
+        "ignore_missing": true
+      }
+    }
+  ],
+  "date_index_name": {
+    "index_name_prefix_avant": "{{fields.index_prefix}}",
+    "index_name_prefix_apres": "{{fields.index_prefix}}{{agent.labels.client}}-"
+  }
+}
