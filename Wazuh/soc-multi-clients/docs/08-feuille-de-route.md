@@ -8,7 +8,7 @@
 | Rôle indexer par client + tests d'isolation (200 / 403) | ✅ Fait |
 | `do_not_fail_on_forbidden` (dashboard utilisable par un client) | ✅ Fait |
 | Scripts : patch du pipeline, onboarding, audit, tests d'isolation | ✅ Fait |
-| RBAC de l'API Wazuh (liste des agents filtrée par client) | 🔄 En cours |
+| RBAC de l'API Wazuh (liste des agents filtrée par client) | ✅ Fait |
 | Restriction des tenants (retrait du tenant global pour les clients) | ⏳ |
 | Rétention ISM par client | ⏳ |
 | Segmentation pfSense : zones SOC / Client A / Client B / Attaquant | ⏳ |

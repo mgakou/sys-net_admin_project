@@ -23,7 +23,7 @@ Wazuh n'est pas multi-tenant nativement. Ce projet construit le cloisonnement **
 | Un utilisateur client ne lit pas celles d'un autre | ✅ | `HTTP 403 security_exception` |
 | Le dashboard ne montre que ses alertes | ✅ | 14 alertes affichées = contenu de son index |
 | Nouveau client sans toucher au pipeline | ✅ | Script [`onboard_client.sh`](scripts/onboard_client.sh) |
-| Liste des agents filtrée par client (API Wazuh) | 🔄 | En cours ([doc](docs/05-rbac-api-wazuh.md)) |
+| Liste des agents filtrée par client (API Wazuh) | ✅ | 1 agent sur 3 visible ([capture](docs/images/client-a-agents.png)) |
 
 ---
 
@@ -90,7 +90,7 @@ flowchart LR
 │   ├── 02-groupes-labels.md        # Groupes, labels, enrôlement des agents
 │   ├── 03-index-par-client.md      # Modification du pipeline Filebeat
 │   ├── 04-rbac-indexer.md          # Rôles OpenSearch, tests d'isolation
-│   ├── 05-rbac-api-wazuh.md        # RBAC de l'API Wazuh (en cours)
+│   ├── 05-rbac-api-wazuh.md        # RBAC de l'API Wazuh
 │   ├── 06-onboarding-client.md     # Procédure pour un nouveau client
 │   ├── 07-depannage.md             # Problèmes rencontrés et solutions
 │   └── 08-feuille-de-route.md      # Étapes suivantes
